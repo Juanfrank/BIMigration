@@ -99,8 +99,8 @@ class StreamTests(unittest.TestCase):
     def test_split_write_is_redacted(self):
         buf = io.StringIO()
         s = RedactingStream(buf)
-        s.write("conectar a 192.168.")
-        s.write("0.133 fin\n")
+        s.write("conectar a 192.0.")
+        s.write("2.133 fin\n")
         s.flush()
         self.assertEqual(buf.getvalue(), "conectar a <REDACTED:ip> fin\n")
 
