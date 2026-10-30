@@ -19,6 +19,7 @@ import sys
 import zipfile
 from datetime import datetime
 
+from bim_core import extract_refs
 from redact import add_raw_arg, redact_text
 
 TOKEN = re.compile(r"\[([^\[\]]+)\]")
@@ -115,29 +116,73 @@ def build_appendix_a(refs, model, ext_measures, used_by):
     return rows
 
 
-def relationship_activation(rel, model):
-    """Medidas cuyo DAX cita ambas columnas de la relación dentro de USERELATIONSHIP o CROSSFILTER."""
+def page_measure_closure(seed, model):
+    """Medidas de la página y las que citan en su DAX, en cadena. Devuelve {(tabla, nombre)}."""
+    measures = (model or {}).get("measures", [])
+    by_key = {(m["table"], m["name"]): m for m in measures}
+    by_name = {}
+    for m in measures:
+        by_name.setdefault(m["name"], []).append(m)
+    closure = set(seed)
+    todo = list(seed)
+    while todo:
+        m = by_key.get(todo.pop())
+        if not m:
+            continue
+        for table, name in extract_refs({"kind": "measure", "expression": m.get("expression")}):
+            if table:
+                candidates = [by_key[(table, name)]] if (table, name) in by_key else []
+            else:
+                candidates = by_name.get(name, [])
+            for c in candidates:
+                key = (c["table"], c["name"])
+                if key not in closure:
+                    closure.add(key)
+                    todo.append(key)
+    return closure
+
+
+# USERELATIONSHIP(Tabla[Col], OtraTabla[Col]) y CROSSFILTER(Tabla[Col], OtraTabla[Col], dirección).
+ACTIVATION_CALL = re.compile(
+    r"\b(USERELATIONSHIP|CROSSFILTER)\s*\(\s*"
+    r"(?:'((?:[^']|'')+)'|([\w\.]+))\[([^\[\]]+)\]\s*,\s*"
+    r"(?:'((?:[^']|'')+)'|([\w\.]+))\[([^\[\]]+)\]",
+    re.IGNORECASE)
+
+
+def relationship_activation(rel, model, closure):
+    """Medidas de la página (closure) que activan la relación con USERELATIONSHIP o CROSSFILTER.
+
+    Compara tabla y columna de ambos extremos en los argumentos de la llamada, no solo los nombres de columna.
+    """
+    ends = {((rel["from_table"]), rel["from_column"]), (rel["to_table"], rel["to_column"])}
     hits = []
     for m in (model or {}).get("measures", []):
-        expr = m.get("expression") or ""
-        if ("USERELATIONSHIP(" not in expr and "CROSSFILTER(" not in expr):
+        if (m["table"], m["name"]) not in closure:
             continue
-        if f"[{rel['from_column']}]" in expr and f"[{rel['to_column']}]" in expr:
-            hits.append(f"{m['table']}[{m['name']}]")
+        for match in ACTIVATION_CALL.finditer(m.get("expression") or ""):
+            t1 = (match.group(2) or match.group(3)).replace("''", "'")
+            t2 = (match.group(5) or match.group(6)).replace("''", "'")
+            if {(t1, match.group(4)), (t2, match.group(7))} == ends:
+                hits.append(f"{m['table']}[{m['name']}]")
+                break
     return hits
 
 
-def build_appendix_b(refs_tables, model):
+def build_appendix_b(refs_tables, model, page_measures):
+    """Relaciones entre tablas de la página, o activadas por una medida de la página (sus dependencias incluidas)."""
     if not model:
         return None
+    closure = page_measure_closure(page_measures, model)
     rows = []
     for r in model.get("relationships", []):
-        if r["from_table"] not in refs_tables and r["to_table"] not in refs_tables:
+        activated_by = relationship_activation(r, model, closure)
+        both_in_page = r["from_table"] in refs_tables and r["to_table"] in refs_tables
+        if not both_in_page and not activated_by:
             continue
         card = f"{r['from_cardinality']}{' (defecto)' if r['from_cardinality_is_default'] else ''} : " \
                f"{r['to_cardinality']}{' (defecto)' if r['to_cardinality_is_default'] else ''}"
         active = "Sí" if r["is_active"] else "No"
-        activated_by = relationship_activation(r, model)
         rows.append([r["name"], f"{r['from_table']}[{r['from_column']}]", f"{r['to_table']}[{r['to_column']}]",
                      card, r["cross_filtering_behavior"], active,
                      ", ".join(activated_by) if activated_by else ("No se activa por medida" if r["is_active"] else "Ninguna medida citada")])
@@ -323,7 +368,8 @@ def main():
     lines.append("")
     lines.append("## Apéndice B. Relaciones")
     lines.append("")
-    rel_rows = build_appendix_b(refs_tables, model)
+    page_measures = {(t, n) for t, n, k in refs if k == 'measure'}
+    rel_rows = build_appendix_b(refs_tables, model, page_measures)
     if rel_rows is None:
         lines.append("Requiere definición del modelo (Model.bim). No se puede completar esta sección.")
     elif rel_rows:

@@ -41,7 +41,12 @@ Sin `Model.bim`, esta sección dice que requiere el modelo y solo incluye las me
 
 ## Apéndice B. Relaciones
 
-Columnas: nombre, lado origen, lado destino, cardinalidad (con `(defecto)` cuando el archivo no la declara), filtro cruzado, si está activa y qué medidas la activan. La activación por medida se detecta cuando el DAX de la medida cita ambas columnas dentro de `USERELATIONSHIP` o `CROSSFILTER`; es una coincidencia textual.
+Incluye una relación si se cumple una de estas condiciones:
+
+- Sus dos extremos son tablas que usan los visuales numerados (campos y filtros).
+- Una medida de la página la activa con `USERELATIONSHIP` o `CROSSFILTER`. Las medidas de la página incluyen las que citan en su DAX (en cadena).
+
+Columnas: nombre, lado origen, lado destino, cardinalidad (con `(defecto)` cuando el archivo no la declara), filtro cruzado, si está activa y qué medidas la activan. La activación compara tabla y columna de ambos extremos en los argumentos de la llamada, no solo el nombre de la columna.
 
 ## Apéndice C. Orígenes de datos
 
