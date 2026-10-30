@@ -1,0 +1,214 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "6bc7a10c4030a51780de",
+  "position": {
+    "x": 6.6666666666666661,
+    "y": 1956.6666666666665,
+    "z": 71000,
+    "height": 440,
+    "width": 1213.3333333333333,
+    "tabOrder": 71000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fechas"
+                    }
+                  },
+                  "Property": "Año"
+                }
+              },
+              "queryRef": "Fechas.Año",
+              "nativeQueryRef": "Año",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fechas"
+                    }
+                  },
+                  "Property": "Mes"
+                }
+              },
+              "queryRef": "Fechas.Mes",
+              "nativeQueryRef": "Mes",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dvwSalasNotificaciones"
+                    }
+                  },
+                  "Property": "Sala"
+                }
+              },
+              "queryRef": "dvwSalasNotificaciones.Sala",
+              "nativeQueryRef": "UN-CCN",
+              "active": true,
+              "displayName": "UN-CCN"
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Penal_vwSolicitudesNotificaciones_ccn"
+                    }
+                  },
+                  "Property": "% Notificaciones Cargadas"
+                }
+              },
+              "queryRef": "Penal_vwSolicitudesNotificaciones_ccn.% Notificaciones Cargadas",
+              "nativeQueryRef": "% Solución",
+              "displayName": "% Solución"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Penal_vwSolicitudesNotificaciones_ccn"
+                    }
+                  },
+                  "Property": "% Notificaciones Recibidas (> 1 Traslado)"
+                }
+              },
+              "queryRef": "Penal_vwSolicitudesNotificaciones_ccn.% Notificaciones Recibidas (> 1 Traslado)",
+              "nativeQueryRef": "% DD",
+              "displayName": "% DD"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Penal_vwSolicitudesNotificaciones_ccn"
+                  }
+                },
+                "Property": "% Notificaciones Cargadas"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'EFICIENCIA POR CCN'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7f3551c340d235091320",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Penal_vwTipoRequerimiento_ccn"
+              }
+            },
+            "Property": "TipoRequerimiento"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "p",
+              "Entity": "Penal_vwTipoRequerimiento_ccn",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "p"
+                          }
+                        },
+                        "Property": "TipoRequerimiento"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Notificación de Citación'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Notificación de Citación y Documento'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

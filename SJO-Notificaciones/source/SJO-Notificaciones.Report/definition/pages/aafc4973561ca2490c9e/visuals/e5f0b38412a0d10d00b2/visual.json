@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.5.0/schema.json",
+  "name": "e5f0b38412a0d10d00b2",
+  "position": {
+    "x": 0,
+    "y": 60,
+    "z": 0,
+    "height": 660,
+    "width": 1280
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Info Medidas"
+                    }
+                  },
+                  "Property": "Carpeta"
+                }
+              },
+              "queryRef": "Info Medidas.Carpeta",
+              "nativeQueryRef": "Carpeta"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Info Medidas"
+                    }
+                  },
+                  "Property": "Descripción"
+                }
+              },
+              "queryRef": "Info Medidas.Descripción",
+              "nativeQueryRef": "Descripción"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Info Medidas"
+                    }
+                  },
+                  "Property": "Expresión"
+                }
+              },
+              "queryRef": "Info Medidas.Expresión",
+              "nativeQueryRef": "Expresión"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Info Medidas"
+                  }
+                },
+                "Property": "Descripción"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "252.750016282902D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Info Medidas.Descripción"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "113.0000029919192D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Info Medidas.Carpeta"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "860.2500289965451D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Info Medidas.Expresión"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

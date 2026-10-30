@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "4fe1e3bb3867e9ca0c30",
+  "displayName": "LAB",
+  "displayOption": "ActualSize",
+  "height": 9000,
+  "width": 1000,
+  "visibility": "HiddenInViewMode"
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "d1e6186e35552027ac57",
+  "position": {
+    "x": 36,
+    "y": 422,
+    "z": 61000,
+    "height": 49,
+    "width": 101,
+    "tabOrder": 60000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Desperdicio ",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#5e5d62"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#5e5d62"
+                    }
+                  },
+                  {
+                    "value": "dev./no procede",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5e5d62"
+                    }
+                  },
+                  {
+                    "value": ")",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#5e5d62"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

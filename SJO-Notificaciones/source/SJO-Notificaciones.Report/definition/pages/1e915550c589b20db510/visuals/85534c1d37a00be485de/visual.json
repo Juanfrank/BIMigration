@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "85534c1d37a00be485de",
+  "position": {
+    "x": 7.7777777777777777,
+    "y": 2648.8888888888887,
+    "z": 4000,
+    "height": 351.11111111111109,
+    "width": 1242.2222222222222,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "aiNarratives",
+    "objects": {
+      "narrativeSelection": [
+        {
+          "properties": {
+            "dismissSelectionScreen": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "userPrompt": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Genera un informe analítico profundo con enfoque Lean: 1. Resumen General: Evalúa el total solicitado, completados, % de solución total, carga diaria y % fuera de plazo. 2. Análisis Flujos de Valor (A y B): Compara Lead Time, nivel de producción y % de solución. Identifica cuellos de botella contrastando tiempos de la fase interna vs ejecución y evalúa el impacto del ''domicilio desconocido''. 3. Vías y Medios: Analiza la alta dependencia de la vía Física frente a la telemática. 4. Desempeño de Alguaciles: Analiza su cumplimiento según volumen de trabajo y correlaciona con la tasa de ''domicilio desconocido''. Clasifica y agrupa a los alguaciles por su contribución operativa. 5. Aplazamientos: Compara motivos de aplazamiento 2025-2026, destacando las causas raíz principales. 6. Tendencias CCN: Analiza la tendencia de entradas vs salidas y el nivel de solución por Centro (CCN). Usa lenguaje institucional orientado a la mejora continua.'"
+                }
+              }
+            },
+            "selectedVisualsJson": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"isEntireReportSelected\":false,\"sections\":{\"1e915550c589b20db510\":{\"isEntireSectionSelected\":true}}}'"
+                }
+              }
+            },
+            "useAllVisuals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

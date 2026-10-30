@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "2f9ece94c28a669810d2",
+  "displayName": "Duplicate of Notificaciones V5",
+  "displayOption": "ActualSize",
+  "height": 4000,
+  "width": 1250,
+  "pageBinding": {
+    "name": "2ccdcbd5ad75e4d9339b",
+    "type": "Drillthrough",
+    "parameters": []
+  },
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "270L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "type": "Drillthrough"
+}

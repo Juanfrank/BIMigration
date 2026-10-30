@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "SJO-Notificaciones"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c8748e88-0f75-41d6-8005-8bdb1e8bb7b4"
+  }
+}

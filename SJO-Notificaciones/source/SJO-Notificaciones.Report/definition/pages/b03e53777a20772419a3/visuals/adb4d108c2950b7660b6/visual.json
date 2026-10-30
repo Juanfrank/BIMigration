@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "adb4d108c2950b7660b6",
+  "position": {
+    "x": 24.285714285714288,
+    "y": 361.42857142857144,
+    "z": 32000,
+    "height": 531.42857142857144,
+    "width": 337.14285714285717,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "aiNarratives",
+    "objects": {
+      "narrativeSelection": [
+        {
+          "properties": {
+            "dismissSelectionScreen": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "userPrompt": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Genera un informe institucional y claro sobre la Ciudad Judicial de Santo Domingo Este. Organiza el contenido así: 1) Panorama general: total de salas y porcentaje de salas al día como indicador central. 2) Análisis por tipo de procedimiento: asuntos entrados, salidos y duración. 3) Riesgo semanal: analiza las ultimas 8 semanas del año anterior y las semanas actuales hasta el día de hoy. . 5) Recomendaciones: indica cómo debe planificarse el trabajo aplicando Lean y . Usa cifras directas y redacción objetiva.'"
+                }
+              }
+            },
+            "selectedVisualsJson": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"isEntireReportSelected\":false,\"sections\":{\"3f56894efd7254c1353b\":{\"isEntireSectionSelected\":false,\"visuals\":{\"90d5fba0a148c3715040\":true,\"1ec2c339db149ce98cca\":true}}}}'"
+                }
+              }
+            },
+            "useAllVisuals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
