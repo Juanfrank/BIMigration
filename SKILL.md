@@ -17,6 +17,7 @@ Detalles del proceso, reglas de numeración y limitaciones: [docs/PROCESO.md](do
 | Una o más capturas de la(s) página(s) | Sí | PNG o JPG. |
 | Nombre de la página | Sí | Si el usuario no la dice, el script la lista y debes preguntarla. |
 | `Model.bim` del modelo | Solo si el reporte no trae el modelo en local | Un reporte con `byConnection` (modelo remoto) lo necesita para los apéndices de medidas, relaciones y orígenes. |
+| Escenario de cada captura | No, pero necesario si la captura no está en el estado guardado | Estado en que se tomó la captura: `Default` o el nombre de un bookmark de la página (p. ej., un panel abierto desde un botón). |
 | Dos o más anclas de calibración | No, pero recomendadas | Pares `ID_VISUAL=px,py` con la esquina superior izquierda de un visual en la captura. Sin anclas, la numeración sobre la captura es aproximada. |
 
 ## Procedimiento
@@ -31,8 +32,9 @@ Detalles del proceso, reglas de numeración y limitaciones: [docs/PROCESO.md](do
 
    Omite `--anchor` y `--model` si no aplican.
 
-4. **Revisa la salida.** Abre la captura numerada. Si los números no caen donde deben, pide al usuario dos anclas y vuelve a ejecutar.
-5. **Informa.** Indica la carpeta generada, cuántos visuales se numeraron en cada captura y qué secciones quedaron pendientes (modelo, recursos no encontrados).
+4. **Escenarios.** Mira cada captura y decide en qué estado está: el guardado (`Default`) o un bookmark (`MenuA`, `MenuC`…). Lista los bookmarks con `numbering.json` (`scenarios`). Pásalo como `--scenario "captura.png=Escenario"` en la ejecución. El script no lo detecta solo.
+5. **Revisa la salida.** Abre la captura numerada y su `- contornos.png`. Compara: cada badge debe caer sobre su visual, y los contornos deben coincidir con lo que muestra la captura (paneles abiertos, visuales ocultos). Si no coincide, cambia el escenario declarado; si los números no caen donde deben, pide al usuario dos anclas y vuelve a ejecutar.
+6. **Informa.** Indica la carpeta generada, los escenarios usados, cuántos visuales se numeraron en cada captura, qué badges quedan tapados por otro visual y qué secciones quedaron pendientes (modelo, recursos no encontrados).
 
 ## Salida
 

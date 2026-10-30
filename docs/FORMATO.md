@@ -6,7 +6,7 @@ Un archivo por página: `output/<Archivo> - <Página>.md`.
 
 - Archivo fuente y tipo (`pbip` o `pbix`).
 - Estado del modelo: incluido (con la ruta del `Model.bim`) o pendiente por modo `byConnection`/`none`.
-- Capturas usadas y fecha de generación.
+- Capturas usadas, con el escenario de cada una, y fecha de generación.
 
 ## 1. Numeración
 
@@ -22,6 +22,16 @@ Un bloque por visual numerado:
 ## 3. Filtros de página e informe
 
 Solo si existen. Ámbito, campo, tipo y condición.
+
+## 4. Escenarios y superposiciones
+
+Un bloque por escenario usado por las capturas (Default y cada bookmark usado):
+
+- **Capturas:** las que muestran ese escenario.
+- **Visuales visibles (Nº):** números de la sección 1 visibles en el escenario.
+- **Muestra / Oculta (Nº):** en un bookmark, qué números aparecen y desaparecen respecto al estado guardado.
+- **Cambios en visuales sin numeración:** visuales sin campos (formas, textos) cuya visibilidad cambia.
+- **Badge tapado por:** tabla de números cuyo badge queda cubierto por un visual de mayor z en ese escenario. Si no hay ninguno, lo indica.
 
 ## Apéndice A. Medidas y columnas calculadas
 

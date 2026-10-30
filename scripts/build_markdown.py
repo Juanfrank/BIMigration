@@ -236,7 +236,7 @@ def main():
     lines.append("")
     lines.append(f"- Fuente: `{os.path.basename(report['source']['path'])}` ({report['source']['type']})")
     lines.append(f"- Modelo: {model_status}")
-    lines.append(f"- Capturas: {', '.join(c['file'] for c in numbering['captures'])}")
+    lines.append(f"- Capturas: {', '.join(c['file'] + ' (' + c['scenario'] + ')' for c in numbering['captures'])}")
     lines.append(f"- Generado: {datetime.now():%Y-%m-%d %H:%M}")
     lines.append("")
     lines.append("## 1. Numeración")
@@ -271,6 +271,33 @@ def main():
         lines.append(table(["Ámbito", "Campo", "Tipo", "Condición"],
                            [["Página"] + [f["field_label"], f["type"], "; ".join(f["conditions"]) or "—"] for f in page["filters"]]
                            + [["Informe"] + [f["field_label"], f["type"], "; ".join(f["conditions"]) or "—"] for f in report["report_filters"]]))
+
+    lines.append("")
+    lines.append("## 4. Escenarios y superposiciones")
+    lines.append("")
+    lines.append("Estado guardado (Default) y cada bookmark que afecta a esta página. Los números son los de la sección 1; "
+                 "«muestra» y «oculta» se comparan contra el estado guardado.")
+    for name, sc in numbering.get("scenarios", {}).items():
+        caps = [c["file"] for c in numbering["captures"] if c["scenario"] == name]
+        title = f"### {name}" + (" (bookmark)" if sc["bookmark"] else " (estado guardado)")
+        lines.append("")
+        lines.append(title)
+        lines.append("")
+        lines.append(f"- Capturas: {', '.join(caps) if caps else 'ninguna'}")
+        lines.append(f"- Visuales visibles (Nº): {', '.join(map(str, sc['visible_numbers'])) or '—'}")
+        if sc["bookmark"]:
+            lines.append(f"- Muestra (Nº): {', '.join(map(str, sc['shows'])) or '—'}")
+            lines.append(f"- Oculta (Nº): {', '.join(map(str, sc['hides'])) or '—'}")
+        if sc["other_changes"]:
+            others = "; ".join(f"{o['visual_type']}" + (f" · {o['title']}" if o["title"] else "") for o in sc["other_changes"])
+            lines.append(f"- Cambios en visuales sin numeración: {others}")
+        if sc["covered"]:
+            lines.append("")
+            lines.append(table(["Nº", "Badge tapado por"],
+                               [[c["number"], "; ".join(f"{b['visual_type']}" + (f" · {b['title']}" if b["title"] else "")
+                                                       for b in c["covered_by"])] for c in sc["covered"]]))
+        else:
+            lines.append("- Superposiciones: ningún badge queda tapado por otro visual.")
 
     lines.append("")
     lines.append("## Apéndice A. Medidas y columnas calculadas")

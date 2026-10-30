@@ -4,7 +4,7 @@
 Uso:
     python scripts/run_skill.py --source ruta/Archivo.pbip --page "Nombre" \
         --captures ruta/captura1.png [ruta/captura2.png ...] \
-        [--model ruta/Model.bim] [--anchor "ID=px,py" ...]
+        [--model ruta/Model.bim] [--anchor "ID=px,py" ...] [--scenario "captura=escenario" ...]
 
 Estructura resultante (en processed/ dentro del repo):
     processed/<Archivo>/
@@ -91,6 +91,8 @@ def main():
     ap.add_argument("--captures", nargs="+", required=True, help="Capturas de la(s) página(s)")
     ap.add_argument("--model", help="Model.bim del modelo fuente (si el reporte no lo trae en local)")
     ap.add_argument("--anchor", action="append", help="ID_VISUAL=px,py para calibrar la captura")
+    ap.add_argument("--scenario", action="append",
+                    help="captura=escenario: estado en que está la captura (Default o nombre de un bookmark)")
     ap.add_argument("--repo-root", default=REPO)
     ap.add_argument("--redact", action="store_true", help="Quita la cadena de conexión del modelo remoto en la copia")
     args = ap.parse_args()
@@ -143,6 +145,8 @@ def main():
                "--capture", *caps, "--out-dir", output_dir, "--numbering-out", numbering_json]
     for a in args.anchor or []:
         ann_cmd += ["--anchor", a]
+    for sc in args.scenario or []:
+        ann_cmd += ["--scenario", sc]
     run(ann_cmd)
 
     page_name = __import__("json").load(open(numbering_json, encoding="utf-8"))["page"]
