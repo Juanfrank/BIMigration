@@ -50,7 +50,18 @@ Columnas: nombre, lado origen, lado destino, cardinalidad (con `(defecto)` cuand
 
 ## Apéndice C. Orígenes de datos
 
-Orígenes del modelo (nombre, tipo, detalles de conexión, autenticación) y particiones de las tablas usadas (modo, tipo y expresión de origen).
+Orígenes del modelo (nombre, tipo, detalles de conexión redactados, autenticación) y, por cada tabla usada, el origen de cada partición.
+
+El origen se muestra solo como **esquema y tabla o vista**. No se publica el texto M ni el SQL de las consultas:
+
+- **Tabla o vista SQL:** esquema y nombre del origen de navegación.
+- **Consulta SQL:** una fila por tabla o vista de sus FROM y JOIN. Los CTE no cuentan.
+- **Otra tabla del modelo:** la tabla de la que se parte (sin esquema).
+- **Archivo** (Excel, SharePoint u otro): solo el tipo. La ruta o URL no se publica.
+- **Datos embebidos:** datos escritos en la propia expresión.
+- **Tabla calculada (DAX)** y **grupo de cálculo:** sin origen SQL.
+
+Columnas de la tabla de particiones: tabla, modo, origen, esquema, tabla o vista.
 
 ## Recursos externos
 

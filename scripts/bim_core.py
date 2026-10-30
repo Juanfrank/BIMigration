@@ -56,6 +56,69 @@ def join_text(value):
     return str(value)
 
 
+NAV_ITEM = re.compile(r'\[\s*Schema\s*=\s*"([^"]+)"\s*,\s*Item\s*=\s*"([^"]+)"\s*\]')
+CTE_NAME = re.compile(r"(\w+)\s+AS\s*\(", re.IGNORECASE)
+FROM_JOIN = re.compile(r"\b(?:FROM|JOIN)\s+((?:\[[^\]]+\]|\w+)(?:\s*\.\s*(?:\[[^\]]+\]|\w+)){0,2})", re.IGNORECASE)
+NAME_PART = re.compile(r"\[([^\]]+)\]|(\w+)")
+
+
+STRING_LITERAL = re.compile(r'"((?:[^"]|"")*)"')
+SQL_HINT = re.compile(r"\bSELECT\b.*\bFROM\b", re.IGNORECASE | re.DOTALL)
+REFERENCE = re.compile(r"^\s*let\s+\w+\s*=\s*([A-Za-z_]\w*)\s*(?:,|\bin\b)", re.IGNORECASE)
+
+
+def _sql_objects(sql):
+    """Tablas y vistas de los FROM y JOIN de un texto SQL. No devuelve el texto."""
+    text = sql.replace('""', '"').replace("#(lf)", "\n").replace("#(tab)", " ")
+    text = re.sub(r"/\*.*?\*/", " ", text, flags=re.DOTALL)
+    text = re.sub(r"--[^\n]*", " ", text)
+    ctes = {c.lower() for c in CTE_NAME.findall(text)}
+    objects = []
+    for m in FROM_JOIN.finditer(text):
+        parts = [a or b for a, b in NAME_PART.findall(m.group(1))]
+        if len(parts) == 1 and parts[0].lower() in ctes:
+            continue
+        obj = {"schema": parts[-2] if len(parts) >= 2 else None, "name": parts[-1]}
+        if obj not in objects:
+            objects.append(obj)
+    return objects
+
+
+def parse_m_source(expr):
+    """Origen de una expresión M de partición: esquema y tabla o vista, sin texto de la consulta.
+
+    kind:    navigation   (Schema/Item de un origen SQL)
+             native_query (SQL en Query= o en cualquier literal con SELECT ... FROM)
+             reference    (la consulta toma otra tabla del modelo como origen)
+             file         (Excel, CSV o JSON; la ruta no se devuelve)
+             embedded     (datos escritos en la propia expresión)
+             None         (sin origen reconocible)
+    objects: [{"schema": str|None, "name": str}]
+    """
+    if not expr:
+        return {"kind": None, "objects": []}
+    nav = NAV_ITEM.search(expr)
+    if nav:
+        return {"kind": "navigation", "objects": [{"schema": nav.group(1), "name": nav.group(2)}]}
+    sql_literals = [m.group(1) for m in STRING_LITERAL.finditer(expr) if SQL_HINT.search(m.group(1))]
+    if sql_literals:
+        objects = []
+        for literal in sql_literals:
+            for obj in _sql_objects(literal):
+                if obj not in objects:
+                    objects.append(obj)
+        return {"kind": "native_query", "objects": objects}
+    ref = REFERENCE.search(expr)
+    if ref:
+        return {"kind": "reference", "objects": [{"schema": None, "name": ref.group(1)}]}
+    if re.search(r"\bTable\.FromRows\b|#table\(", expr):
+        return {"kind": "embedded", "objects": []}
+    if re.search(r"\b(Excel\.Workbook|Csv\.Document|Json\.Document|File\.Contents|SharePoint\.Files)\b", expr):
+        # Solo se indica el tipo de archivo: la ruta o la URL no se publican.
+        return {"kind": "file", "objects": []}
+    return {"kind": None, "objects": []}
+
+
 def _partition_source(part):
     src = part.get("source", {})
     return join_text(src.get("expression")), src.get("type")

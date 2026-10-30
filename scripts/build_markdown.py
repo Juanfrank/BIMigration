@@ -189,6 +189,28 @@ def build_appendix_b(refs_tables, model, page_measures):
     return rows
 
 
+ORIGIN_LABELS = {
+    "navigation": "Tabla o vista SQL",
+    "native_query": "Consulta SQL (tablas referenciadas)",
+    "reference": "Otra tabla del modelo",
+    "file": "Archivo (Excel, SharePoint u otro)",
+    "embedded": "Datos embebidos",
+}
+
+
+def origin_rows(table_name, mode, partition):
+    """Filas del Apéndice C para una partición: una por objeto de origen. Nunca incluye el texto M ni SQL."""
+    if partition["source_type"] == "calculated":
+        return [[table_name, mode, "Tabla calculada (DAX)", "—", "—"]]
+    if partition["source_type"] == "calculationGroup":
+        return [[table_name, mode, "Grupo de cálculo", "—", "—"]]
+    label = ORIGIN_LABELS.get(partition.get("source_kind"), "Sin origen reconocible")
+    objects = partition.get("source_objects") or []
+    if not objects:
+        return [[table_name, mode, label, "—", "—"]]
+    return [[table_name, mode, label, obj["schema"] or "—", obj["name"]] for obj in objects]
+
+
 def build_appendix_c(refs_tables, model):
     if not model:
         return None
@@ -201,7 +223,7 @@ def build_appendix_c(refs_tables, model):
         if t["name"] not in refs_tables:
             continue
         for p in t.get("partitions", []):
-            part_rows.append([t["name"], p["name"], p["mode"], p["source_type"], p["source_expression"]])
+            part_rows.extend(origin_rows(t["name"], p["mode"], p))
     return lines, part_rows
 
 
@@ -388,7 +410,7 @@ def main():
         lines.append(table(["Origen", "Tipo", "Detalles de conexión", "Autenticación"], ds_rows) if ds_rows else "El modelo no define orígenes de datos.")
         if part_rows:
             lines.append("")
-            lines.append(table(["Tabla", "Partición", "Modo", "Tipo de origen", "Expresión de origen"], part_rows))
+            lines.append(table(["Tabla", "Modo", "Origen", "Esquema", "Tabla o vista"], part_rows))
 
     lines.append("")
     lines.append("## Recursos externos")

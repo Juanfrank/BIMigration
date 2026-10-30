@@ -12,6 +12,7 @@ import argparse
 import json
 import sys
 
+from bim_core import parse_m_source
 from redact import add_raw_arg, redact_value
 
 
@@ -63,16 +64,23 @@ def parse_measures(table):
     return out
 
 
-def parse_partitions(table):
+def parse_partitions(table, keep_expression):
     out = []
     for p in table.get("partitions", []):
         src = p.get("source", {})
-        out.append({
+        expression = text(src.get("expression"))
+        origin = parse_m_source(expression) if src.get("type") == "m" else {"kind": None, "objects": []}
+        row = {
             "name": p.get("name"),
             "mode": p.get("mode"),
             "source_type": src.get("type"),
-            "source_expression": text(src.get("expression")),
-        })
+            "source_kind": origin["kind"],
+            "source_objects": origin["objects"],
+        }
+        if keep_expression:
+            # Solo con --raw: el texto M puede traer la consulta completa.
+            row["source_expression"] = expression
+        out.append(row)
     return out
 
 
@@ -108,7 +116,7 @@ def main():
     tables, columns, measures = [], [], []
     for t in model.get("tables", []):
         tables.append({"name": t.get("name"), "is_hidden": t.get("isHidden", False),
-                       "description": t.get("description"), "partitions": parse_partitions(t)})
+                       "description": t.get("description"), "partitions": parse_partitions(t, args.raw)})
         columns += [dict(c, table=t.get("name")) for c in parse_columns(t)]
         measures += parse_measures(t)
     out = {
