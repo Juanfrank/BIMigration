@@ -1,9 +1,0 @@
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
-  "name": "83dbb7e3c71710bae5d3",
-  "displayName": "AUDIENCIAS",
-  "displayOption": "ActualSize",
-  "height": 1500,
-  "width": 1600,
-  "visibility": "HiddenInViewMode"
-}
