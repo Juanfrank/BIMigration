@@ -41,7 +41,7 @@ Lee `Model.bim` (TMSL JSON) y produce tablas, columnas (con marca de calculada),
 ## annotate_captures.py
 
 - **Tarjetas múltiples:** un `card` o `cardVisual` con varios campos se divide en partes iguales a lo ancho; cada campo recibe su número y, en el .md, solo muestra su campo.
-- **Numeración:** solo visuales no ocultos con al menos un campo. Orden: banda de 30 px en Y, luego X. Los visuales dentro de un grupo suman la posición del grupo.
+- **Numeración:** solo visuales con al menos un campo que no estén ocultos, ni por sí mismos ni por estar dentro de un grupo oculto (los ocultos se descartan también de la lista de recursos de cada captura). Orden: banda de 30 px en Y, luego X. Los visuales dentro de un grupo suman la posición del grupo.
 - **Calibración:** con dos o más anclas, ajusta una transformación lineal por eje (mínimos cuadrados). Sin anclas, usa `ancho_captura / ancho_página` sin desplazamiento y lo deja escrito en `numbering.json`.
 - **Salida:** dibuja un distintivo rojo con el número en la esquina superior izquierda de cada visual numerado que cae dentro de la captura. `numbering.json` guarda la numeración de toda la página y, por captura, los visuales dentro del marco (incluidos los no numerados, para recursos).
 

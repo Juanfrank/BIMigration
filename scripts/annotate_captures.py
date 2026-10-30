@@ -52,11 +52,27 @@ def find_page(report, name):
     raise SystemExit(f"No existe la página '{name}'")
 
 
+def is_effectively_hidden(v, by_id):
+    """Oculto si el visual o cualquiera de sus grupos padre está oculto."""
+    seen = set()
+    while v:
+        if v["is_hidden"]:
+            return True
+        pid = v.get("parent_group")
+        if pid in seen:
+            return False
+        seen.add(pid)
+        v = by_id.get(pid)
+    return False
+
+
 def absolute_positions(page):
-    """Devuelve visuales con coordenadas absolutas (sumando la posición del grupo padre)."""
+    """Devuelve visuales visibles con coordenadas absolutas (sumando la posición del grupo padre)."""
     by_id = {v["id"]: v for v in page["visuals"]}
     result = []
     for v in page["visuals"]:
+        if is_effectively_hidden(v, by_id):
+            continue
         ax, ay = v["x"], v["y"]
         parent = by_id.get(v.get("parent_group"))
         if parent:
