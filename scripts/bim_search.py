@@ -35,7 +35,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from bim_core import extract_refs, iter_objects, load_bim, sha256_file  # noqa: E402
 from redact import RedactingStream, add_raw_arg  # noqa: E402
 
-SCHEMA_VERSION = "2"  # subir cuando cambie lo que se guarda en el índice (p. ej., limpieza de comentarios)
+SCHEMA_VERSION = "3"  # subir cuando cambie lo que se guarda en el índice (p. ej., limpieza de comentarios)
 CACHE_DIR = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "bim-search"
 LAST_FILE = CACHE_DIR / "last.json"
 FIELD_COLUMNS = {"name": "name", "desc": "description", "expr": "expression"}

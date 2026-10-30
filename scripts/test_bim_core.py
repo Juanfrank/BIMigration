@@ -84,6 +84,9 @@ class StripCommentsTests(unittest.TestCase):
         self.assertEqual(strip_dax_comments("SUM('a//b'[c]) -- z"), "SUM('a//b'[c])")
         self.assertEqual(strip_dax_comments("SUM(T[a//b]) // z"), "SUM(T[a//b])")
 
+    def test_nested_block_comments(self):
+        self.assertEqual(strip_dax_comments("A /* x /*y*/ z */ B"), "A   B")
+
     def test_comment_only_expression_is_empty(self):
         self.assertEqual(strip_dax_comments("// solo comentario"), "")
 

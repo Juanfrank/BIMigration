@@ -36,7 +36,7 @@ def strip_dax_comments(expr):
     """Quita los comentarios DAX (// y -- hasta fin de línea, y /* ... */) de una expresión.
 
     No toca lo que va dentro de cadenas "...", nombres de tabla 'x' ni nombres de columna [x]:
-    ahí // o -- son texto. Las líneas que quedan vacías se reducen a una sola.
+    ahí // o -- son texto. Los bloques /* */ se anidan. Las líneas que quedan vacías se reducen a una sola.
     """
     if not expr:
         return expr
@@ -64,9 +64,18 @@ def strip_dax_comments(expr):
             j = expr.find("\n", i)
             i = n if j < 0 else j
         elif expr.startswith("/*", i):
-            j = expr.find("*/", i + 2)
+            # Los comentarios de bloque se anidan: un /* dentro de otro bloque no cierra el exterior.
+            # Algunas medidas comentan un bloque que contiene sus propios comentarios.
+            depth, j = 1, i + 2
+            while j < n and depth:
+                if expr.startswith("/*", j):
+                    depth, j = depth + 1, j + 2
+                elif expr.startswith("*/", j):
+                    depth, j = depth - 1, j + 2
+                else:
+                    j += 1
             out.append(" ")
-            i = n if j < 0 else j + 2
+            i = j
         else:
             out.append(c)
             i += 1

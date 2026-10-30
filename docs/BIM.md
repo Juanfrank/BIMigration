@@ -56,6 +56,21 @@ Cada objeto es un diccionario con `kind`, `table`, `name`, `expression`, `data_t
 
 `extract_refs` devuelve `[(tabla o None, nombre)]`. Una referencia sin tabla (`[Medida]`) aparece con `None`.
 
+## Validación de DAX
+
+`scripts/dax_check.py` revisa las medidas y columnas calculadas de un `.bim`:
+
+```bash
+python scripts/dax_check.py --bim Model.bim          # 0 = sin problemas, 1 = hay problemas
+python scripts/dax_check.py --expr "CALCULATE([x], T[c])"
+```
+
+Detecta cadenas, nombres y comentarios sin cerrar, paréntesis o llaves sin pareja, `*/` sueltos, comas finales y comentarios que quedan después de limpiar. También comprueba que la limpieza no cambie el código vivo: los tokens antes y después deben ser iguales.
+
+No es un formateador ni valida funciones o columnas. Un formateador en línea (daxformatter.com) enviaría el DAX del modelo a un servicio externo, por lo que no se usa aquí.
+
+Los comentarios de bloque `/* */` se anidan: un `/*` dentro de otro bloque no cierra el exterior. Es la intención visible de las dos medidas que comentan un bloque con sub-comentarios (`Juez Estado Fallo`, `Juez En Mora Prueba`). Las reglas no anidadas de DAX darían un `*/` sobrante; si el motor de Power BI no admite anidamiento, esas dos medidas ya fallan en el original.
+
 ## Redacción
 
 Por defecto, `bim_search.py` redacta su salida (texto y JSON): hosts en orígenes M (`Sql.Databases("...")`), IPs, cadenas de conexión, credenciales y URLs `powerbi://`. `--raw` desactiva la redacción para uso local.
