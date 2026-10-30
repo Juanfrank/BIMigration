@@ -13,7 +13,7 @@ from redact import RedactingStream, redact_file, redact_text, redact_tree, redac
 
 class RedactTextTests(unittest.TestCase):
     def test_m_source_host(self):
-        self.assertEqual(redact_text('Origen = Sql.Databases("192.168.0.133"),'),
+        self.assertEqual(redact_text('Origen = Sql.Databases("192.0.2.133"),'),
                          'Origen = Sql.Databases("<REDACTED:host>"),')
 
     def test_m_source_host_with_options(self):
@@ -42,7 +42,7 @@ class RedactTextTests(unittest.TestCase):
                          "Data Source=<REDACTED:host>;x")
 
     def test_ip_anywhere(self):
-        self.assertEqual(redact_text("conectar a 192.168.0.25 para datos"), "conectar a <REDACTED:ip> para datos")
+        self.assertEqual(redact_text("conectar a 192.0.2.25 para datos"), "conectar a <REDACTED:ip> para datos")
 
     def test_no_false_positive_on_dax(self):
         text = "VAR _Secretarial = IF(_Secretarial, 1)"
