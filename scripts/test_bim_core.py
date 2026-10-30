@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from bim_core import extract_refs, parse_m_source  # noqa: E402
+from bim_core import extract_refs, parse_m_source, strip_dax_comments  # noqa: E402
 
 
 class NavigationTests(unittest.TestCase):
@@ -65,6 +65,30 @@ class ExtractRefsTests(unittest.TestCase):
     def test_refs_ignore_strings_and_comments(self):
         obj = {"kind": "measure", "expression": 'VAR a = "[no]" // [tampoco]\nRETURN CALCULATE([M], T[C])'}
         self.assertEqual(set(extract_refs(obj)), {(None, "M"), ("T", "C")})
+
+
+class StripCommentsTests(unittest.TestCase):
+    def test_line_comments(self):
+        self.assertEqual(strip_dax_comments("VAR a = 1 // nota\nRETURN a"), "VAR a = 1\nRETURN a")
+        self.assertEqual(strip_dax_comments("x = 1 -- nota\n+ 2"), "x = 1\n+ 2")
+
+    def test_block_comment_across_lines(self):
+        self.assertEqual(strip_dax_comments("CALCULATE(\n /* quitar\n esto */ SUM(T[c]) )"),
+                         "CALCULATE(\n   SUM(T[c]) )")
+
+    def test_markers_inside_strings_are_kept(self):
+        self.assertEqual(strip_dax_comments('IF(T[u] = "http://x -- y", 1, 0) // fin'),
+                         'IF(T[u] = "http://x -- y", 1, 0)')
+
+    def test_markers_inside_identifiers_are_kept(self):
+        self.assertEqual(strip_dax_comments("SUM('a//b'[c]) -- z"), "SUM('a//b'[c])")
+        self.assertEqual(strip_dax_comments("SUM(T[a//b]) // z"), "SUM(T[a//b])")
+
+    def test_comment_only_expression_is_empty(self):
+        self.assertEqual(strip_dax_comments("// solo comentario"), "")
+
+    def test_blank_lines_collapse(self):
+        self.assertEqual(strip_dax_comments("A\n\n// x\n\n\nB"), "A\n\nB")
 
 
 if __name__ == "__main__":

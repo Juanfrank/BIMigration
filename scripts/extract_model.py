@@ -12,7 +12,7 @@ import argparse
 import json
 import sys
 
-from bim_core import parse_m_source
+from bim_core import parse_m_source, strip_dax_comments
 from redact import add_raw_arg, redact_value
 
 
@@ -38,7 +38,7 @@ def parse_columns(table):
             "name": c.get("name"),
             "data_type": c.get("dataType"),
             "is_calculated": "expression" in c,
-            "expression": text(c.get("expression")),
+            "expression": strip_dax_comments(text(c.get("expression"))),
             "source_column": c.get("sourceColumn"),
             "description": c.get("description"),
             "format_string": c.get("formatString"),
@@ -55,7 +55,7 @@ def parse_measures(table):
         out.append({
             "table": table.get("name"),
             "name": m.get("name"),
-            "expression": text(m.get("expression")),
+            "expression": strip_dax_comments(text(m.get("expression"))),
             "description": m.get("description"),
             "format_string": m.get("formatString"),
             "display_folder": m.get("displayFolder"),

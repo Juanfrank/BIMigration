@@ -32,6 +32,53 @@ DAX_STRING = re.compile(r'"(?:[^"]|"")*"')
 DAX_COMMENT = re.compile(r"//[^\n]*|--[^\n]*")
 
 
+def strip_dax_comments(expr):
+    """Quita los comentarios DAX (// y -- hasta fin de línea, y /* ... */) de una expresión.
+
+    No toca lo que va dentro de cadenas "...", nombres de tabla 'x' ni nombres de columna [x]:
+    ahí // o -- son texto. Las líneas que quedan vacías se reducen a una sola.
+    """
+    if not expr:
+        return expr
+    out = []
+    i, n = 0, len(expr)
+    while i < n:
+        c = expr[i]
+        if c in ('"', "'"):
+            j = i + 1
+            while j < n:
+                if expr[j] == c:
+                    if j + 1 < n and expr[j + 1] == c:
+                        j += 2
+                        continue
+                    break
+                j += 1
+            out.append(expr[i:j + 1])
+            i = j + 1
+        elif c == "[":
+            j = expr.find("]", i)
+            j = n - 1 if j < 0 else j
+            out.append(expr[i:j + 1])
+            i = j + 1
+        elif expr.startswith("//", i) or expr.startswith("--", i):
+            j = expr.find("\n", i)
+            i = n if j < 0 else j
+        elif expr.startswith("/*", i):
+            j = expr.find("*/", i + 2)
+            out.append(" ")
+            i = n if j < 0 else j + 2
+        else:
+            out.append(c)
+            i += 1
+    lines = [line.rstrip() for line in "".join(out).split("\n")]
+    collapsed = []
+    for line in lines:
+        if line == "" and collapsed and collapsed[-1] == "":
+            continue
+        collapsed.append(line)
+    return "\n".join(collapsed).strip("\n")
+
+
 def sha256_file(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -154,6 +201,8 @@ def iter_objects(model):
     for obj in _raw_objects(model):
         for key in ("expression", "description", "display_folder", "format_string", "source_column"):
             obj[key] = join_text(obj[key])
+        if obj["kind"] in ("measure", "calculated_column"):
+            obj["expression"] = strip_dax_comments(obj["expression"])
         yield obj
 
 

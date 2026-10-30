@@ -35,7 +35,7 @@ Un bloque por escenario usado por las capturas (Default y cada bookmark usado):
 
 ## Apéndice A. Medidas y columnas calculadas
 
-Columnas: tabla, nombre, origen (Medida del modelo, Medida de extensión, Columna calculada), descripción, DAX, formato, carpeta de visualización, oculta, y los números de los visuales que la usan. Si una medida cita otra en su DAX, la segunda aparece con "dependencia" o con los números de visual que la usan.
+Columnas: tabla, nombre, origen (Medida del modelo, Medida de extensión, Columna calculada), descripción, DAX (sin comentarios `//`, `--` ni `/* */`; los que van dentro de cadenas o nombres se conservan), formato, carpeta de visualización, oculta, y los números de los visuales que la usan. Si una medida cita otra en su DAX, la segunda aparece con "dependencia" o con los números de visual que la usan.
 
 Sin `Model.bim`, esta sección dice que requiere el modelo y solo incluye las medidas de extensión que estén en el propio archivo.
 
