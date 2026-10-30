@@ -36,10 +36,10 @@ Detalles del proceso, reglas de numeración y limitaciones: [docs/PROCESO.md](do
 
 ## Salida
 
-Por archivo analizado, en la raíz del repo:
+Por archivo analizado, dentro de `processed/` en la raíz del repo:
 
 ```
-<Archivo>/
+processed/<Archivo>/
   source/    archivo, carpetas .Report/.SemanticModel, capturas originales, Model.bim (si se dio)
   output/    capturas numeradas, "<Archivo> - <Página>.md", resources/, datos/ (JSON intermedios)
 ```

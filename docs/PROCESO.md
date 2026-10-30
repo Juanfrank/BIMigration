@@ -9,9 +9,11 @@ Documentación de `scripts/` y del flujo completo de [SKILL.md](../SKILL.md).
 
 ## Pipeline
 
+Los resultados van a `processed/<Archivo>/` dentro del repo.
+
 ```
 run_skill.py
- ├─ copia el archivo, .Report/.SemanticModel, capturas y Model.bim a <Archivo>/source/
+ ├─ copia el archivo, .Report/.SemanticModel, capturas y Model.bim a processed/<Archivo>/source/
  ├─ extract_report.py   -> output/datos/report.json
  ├─ extract_model.py    -> output/datos/model.json        (solo si hay Model.bim)
  ├─ annotate_captures.py-> output/<captura> - numerada.png

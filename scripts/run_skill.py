@@ -6,8 +6,8 @@ Uso:
         --captures ruta/captura1.png [ruta/captura2.png ...] \
         [--model ruta/Model.bim] [--anchor "ID=px,py" ...]
 
-Estructura resultante (en la raíz del repo):
-    <Archivo>/
+Estructura resultante (en processed/ dentro del repo):
+    processed/<Archivo>/
       source/      archivo .pbip/.pbix (y carpetas .Report / .SemanticModel), capturas, Model.bim
       output/      capturas numeradas, <Archivo> - <Página>.md, resources/, datos/ (JSON intermedios)
 
@@ -96,7 +96,7 @@ def main():
     args = ap.parse_args()
 
     stem = os.path.splitext(os.path.basename(args.source))[0]
-    root = os.path.join(args.repo_root, stem)
+    root = os.path.join(args.repo_root, "processed", stem)
     source_dir = os.path.join(root, "source")
     output_dir = os.path.join(root, "output")
     data_dir = os.path.join(output_dir, "datos")
