@@ -201,14 +201,15 @@ ORIGIN_LABELS = {
 def origin_rows(table_name, mode, partition):
     """Filas del Apéndice C para una partición: una por objeto de origen. Nunca incluye el texto M ni SQL."""
     if partition["source_type"] == "calculated":
-        return [[table_name, mode, "Tabla calculada (DAX)", "—", "—"]]
+        return [[table_name, mode, "Tabla calculada (DAX)", "—", "—", "—"]]
     if partition["source_type"] == "calculationGroup":
-        return [[table_name, mode, "Grupo de cálculo", "—", "—"]]
+        return [[table_name, mode, "Grupo de cálculo", "—", "—", "—"]]
     label = ORIGIN_LABELS.get(partition.get("source_kind"), "Sin origen reconocible")
     objects = partition.get("source_objects") or []
     if not objects:
-        return [[table_name, mode, label, "—", "—"]]
-    return [[table_name, mode, label, obj["schema"] or "—", obj["name"]] for obj in objects]
+        return [[table_name, mode, label, "—", "—", "—"]]
+    return [[table_name, mode, label, obj.get("database") or "—", obj["schema"] or "—", obj["name"]]
+            for obj in objects]
 
 
 def build_appendix_c(refs_tables, model):
@@ -410,7 +411,7 @@ def main():
         lines.append(table(["Origen", "Tipo", "Detalles de conexión", "Autenticación"], ds_rows) if ds_rows else "El modelo no define orígenes de datos.")
         if part_rows:
             lines.append("")
-            lines.append(table(["Tabla", "Modo", "Origen", "Esquema", "Tabla o vista"], part_rows))
+            lines.append(table(["Tabla", "Modo", "Origen", "Base de datos", "Esquema", "Tabla o vista"], part_rows))
 
     lines.append("")
     lines.append("## Recursos externos")

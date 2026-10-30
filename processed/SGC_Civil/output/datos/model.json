@@ -16,6 +16,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJAsuntos"
             }
@@ -35,14 +36,17 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJProductos"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwSolicitudesNotificaciones_ccn"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJAudienciasBO"
             }
@@ -62,6 +66,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJCalidades"
             }
@@ -81,42 +86,52 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGCDocumentosTramite"
             },
             {
+              "database": "DepositoDocumentos",
               "schema": "dbo",
               "name": "AsignacionesAdmisibilidades"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwAsignacionesJueces_Local"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwHistoricoDepositos"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwSalasBO"
             },
             {
+              "database": "DataMart",
               "schema": "dbo",
               "name": "vwEntradaExpedientesBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwTribunalesBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwActoresBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJSorteo"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJProductos"
             }
@@ -136,6 +151,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJMaterias"
             }
@@ -155,6 +171,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJMotivos"
             }
@@ -174,6 +191,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJPersonas"
             }
@@ -193,6 +211,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJSorteo"
             }
@@ -212,6 +231,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJTipoAsignaciones"
             }
@@ -231,6 +251,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJTipoProcedimiento"
             }
@@ -250,6 +271,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJTipoAudiencias"
             }
@@ -269,6 +291,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJTipoResultados"
             }
@@ -288,6 +311,7 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "DepositoDocumentos",
               "schema": "dbo",
               "name": "Salas"
             }
@@ -307,6 +331,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwTribunalesBO"
             }
@@ -340,6 +365,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJAudienciasModalidades"
             }
@@ -359,6 +385,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJEstatusAudiencia"
             }
@@ -378,6 +405,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwDatoSistema"
             }
@@ -397,6 +425,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwUsuariosBO"
             }
@@ -416,6 +445,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSGJEstatus"
             }
@@ -435,6 +465,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSGJNaturalezas"
             }
@@ -454,6 +485,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSGJObjetos"
             }
@@ -473,18 +505,22 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "Reportes",
               "schema": "dbo",
               "name": "UsuariosPortal"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJPersonas"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJPersonaEntidad"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "sys",
               "name": "all_objects"
             }
@@ -504,6 +540,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSGJProductos"
             }
@@ -523,6 +560,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSGJTipoDocumentos"
             }
@@ -556,6 +594,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwFeriadosRRHH"
             }
@@ -575,6 +614,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJTipoFallos"
             }
@@ -608,6 +648,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJEECEstatus"
             }
@@ -627,6 +668,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJEECEstatusCompletitud"
             }
@@ -646,6 +688,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJEECMotivo"
             }
@@ -665,6 +708,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJEECTipodia"
             }
@@ -684,6 +728,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "dvwTribunalesBO"
             }
@@ -703,6 +748,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwAsignacionesJueces_Local"
             }
@@ -722,10 +768,12 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwDepositoDocumento"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwHistoricoDepositos"
             }
@@ -745,6 +793,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSGJEstatus"
             }
@@ -764,6 +813,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Tipo_Asunto_Entrada_rv"
             }
@@ -783,6 +833,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Grupo_Tipo_Asunto_Entrada"
             }
@@ -802,6 +853,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Clase_Asunto_Entrada"
             }
@@ -821,6 +873,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Fase_Asunto_Entrada"
             }
@@ -840,6 +893,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Grupo_Tipo_Tribunal"
             }
@@ -859,6 +913,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Tipo_Tribunal"
             }
@@ -878,6 +933,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Tipo_Instancia"
             }
@@ -897,6 +953,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Grado_Tribunal"
             }
@@ -916,6 +973,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Tribunal"
             }
@@ -949,6 +1007,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Magistrado_rv"
             }
@@ -968,6 +1027,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "Dim_Sexo"
             }
@@ -987,6 +1047,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJRelAudienciaJuecesBO"
             }
@@ -1034,6 +1095,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "vwSGJProductos"
             }
@@ -1053,6 +1115,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "vwSGJTipoFallos"
             }
@@ -1072,6 +1135,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "vwSGJTipoDocumentos"
             }
@@ -1091,6 +1155,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "dvwUsuariosBO"
             }
@@ -1180,6 +1245,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwAccionesTramites"
             }
@@ -1255,6 +1321,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Staging_BD",
               "schema": "dbo",
               "name": "vwRelacionTribunalSUSEC"
             }
@@ -1274,6 +1341,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwUsuarioSalasBO"
             }
@@ -1321,6 +1389,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "dvwUsuariosBO"
             }
@@ -1340,6 +1409,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwTipoActores"
             }
@@ -1433,6 +1503,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwHistoricoDepositos"
             }
@@ -1466,6 +1537,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwCalificacionesInfracciones_gp"
             }
@@ -1485,6 +1557,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwCentroInternamientos"
             }
@@ -1504,6 +1577,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwInfracciones_gp"
             }
@@ -1523,6 +1597,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwTipoTiempos"
             }
@@ -1542,6 +1617,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwTramiteParteDecisiones_sj"
             }
@@ -1561,6 +1637,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwTramiteParteDecisionInfracciones_sj"
             }
@@ -1580,6 +1657,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwTramiteInfracciones_sj"
             }
@@ -1599,6 +1677,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwHistoricoEstadoJuridicos_bo"
             }
@@ -1618,6 +1697,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "vwSGJTipoFallos"
             }
@@ -1637,6 +1717,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwTipoEstadoJuridicos_bo"
             }
@@ -1656,6 +1737,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwTipoAccionesTramite"
             }
@@ -1675,22 +1757,27 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGCDocumentosTramite"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwHistoricoDepositos"
             },
             {
+              "database": "DataMart",
               "schema": "dbo",
               "name": "vwEntradaExpedientesBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJProductos"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJCasos"
             }
@@ -1724,6 +1811,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwCentrosMensajeria_ccn"
             }
@@ -1743,6 +1831,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwDocumentosSolicitudNotificacion_ccn"
             }
@@ -1762,6 +1851,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwPartesSolicitudNotificacion_ccn"
             }
@@ -1781,18 +1871,22 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwAcuseMedioNotificacion_ccn"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwSolicitudesNotificaciones_ccn"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJProductos"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJAudienciasBO"
             }
@@ -1812,6 +1906,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "dbo",
               "name": "vwSolicitudRequerimientoManual_PA"
             }
@@ -1845,6 +1940,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwConfiguracionesNotificaciones_ccn"
             }
@@ -1864,6 +1960,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwMediosNotificaciones_ccn"
             }
@@ -1883,6 +1980,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "penal",
               "name": "vwViasNotificacionCitacion_ccn"
             }
@@ -1916,6 +2014,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "penal",
               "name": "vwRazonMovimientos"
             }
@@ -1935,6 +2034,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwCasoMovimientos_sj"
             }
@@ -1996,6 +2096,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJSalonAudienciasBO"
             }
@@ -2029,6 +2130,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "penal",
               "name": "vwAcuseMedioNotificacion_ccn"
             }
@@ -2048,6 +2150,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": null,
               "schema": "penal",
               "name": "vwTipoRequerimiento_ccn"
             }
@@ -2067,6 +2170,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "dvwSalasBO"
             }
@@ -2086,6 +2190,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Reportes",
               "schema": "dbo",
               "name": "RelUsuarioEntidadPortal"
             }
@@ -2105,6 +2210,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "Reportes",
               "schema": "dbo",
               "name": "UsuariosPortal"
             }
@@ -2124,6 +2230,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwAsignacionesAbogadosAyudantes"
             }
@@ -2278,6 +2385,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "SGCRepresentantes"
             }
@@ -2297,6 +2405,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "SGCTipoRepresentantes"
             }
@@ -2316,6 +2425,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "SGCRepresentantesPartes"
             }
@@ -2391,6 +2501,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSolicitudesDigitalizacion"
             }
@@ -2410,6 +2521,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwHistoricoSolicitudesDigitalizacion"
             }
@@ -2443,6 +2555,7 @@
           "source_kind": "reference",
           "source_objects": [
             {
+              "database": null,
               "schema": null,
               "name": "dvwSalasBO"
             }
@@ -2462,6 +2575,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "Equipos"
             }
@@ -2481,6 +2595,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "EquipoSala"
             }
@@ -2500,6 +2615,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "EquipoSubprocesos"
             }
@@ -2519,6 +2635,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "EquipoUsuarios"
             }
@@ -2538,6 +2655,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "SubprocesoEstados"
             }
@@ -2557,6 +2675,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "Subprocesos"
             }
@@ -2576,6 +2695,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "TramiteSubprocesoHistorial"
             }
@@ -2595,6 +2715,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "TramiteSubprocesoUsuarios"
             }
@@ -2614,6 +2735,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "GD",
               "name": "UnidadOperativaSala"
             }
@@ -2633,6 +2755,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwTramiteProcedencia"
             }
@@ -2652,22 +2775,27 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJProductos"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJAudienciasBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGCDocumentosTramite"
             },
             {
+              "database": "DataMart",
               "schema": "dbo",
               "name": "vwEntradaExpedientesBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwCasosVinculadosBO"
             }
@@ -2687,10 +2815,12 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "sys",
               "name": "all_objects"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "dvwFeriadosRRHH"
             }
@@ -2710,14 +2840,17 @@
           "source_kind": "native_query",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJAudienciasBO"
             },
             {
+              "database": "DataMart",
               "schema": "dbo",
               "name": "vwEntradaExpedientesBO"
             },
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJProductos"
             }
@@ -2737,6 +2870,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vwSGJRelAudienciasProgramadasJuecesBO"
             }
@@ -2756,6 +2890,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "UsuariosConcurridosPortal"
             }
@@ -2775,6 +2910,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "UsuariosConcurridosSGC"
             }
@@ -2808,6 +2944,7 @@
           "source_kind": "navigation",
           "source_objects": [
             {
+              "database": "PolicticasPublicas",
               "schema": "dbo",
               "name": "vw_Inmuebles"
             }

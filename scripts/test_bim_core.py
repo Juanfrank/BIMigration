@@ -11,7 +11,8 @@ from bim_core import extract_refs, parse_m_source  # noqa: E402
 class NavigationTests(unittest.TestCase):
     def test_schema_and_item(self):
         r = parse_m_source('let O = Sql.Databases("h"), D = O{[Name="D"]}[Data], T = D{[Schema="dbo",Item="vwA"]}[Data] in T')
-        self.assertEqual(r, {"kind": "navigation", "objects": [{"schema": "dbo", "name": "vwA"}]})
+        self.assertEqual(r, {"kind": "navigation",
+                             "objects": [{"database": "D", "schema": "dbo", "name": "vwA"}]})
 
 
 class NativeQueryTests(unittest.TestCase):
@@ -19,19 +20,21 @@ class NativeQueryTests(unittest.TestCase):
         expr = 'let O = Sql.Database("h","db",[Query="SELECT x FROM [dbo].[T1] JOIN base.penal.T2 b ON 1=1"]) in O'
         r = parse_m_source(expr)
         self.assertEqual(r["kind"], "native_query")
-        self.assertEqual(r["objects"], [{"schema": "dbo", "name": "T1"}, {"schema": "penal", "name": "T2"}])
+        self.assertEqual(r["objects"], [{"database": "db", "schema": "dbo", "name": "T1"},
+                                        {"database": "base", "schema": "penal", "name": "T2"}])
 
     def test_comments_do_not_hide_query(self):
         expr = 'let O = Sql.Database("h","db",[Query="-- nota#(lf)SELECT x FROM dbo.T1#(lf)/* FROM falso */"]) in O'
-        self.assertEqual(parse_m_source(expr)["objects"], [{"schema": "dbo", "name": "T1"}])
+        self.assertEqual(parse_m_source(expr)["objects"], [{"database": "db", "schema": "dbo", "name": "T1"}])
 
     def test_cte_names_are_not_sources(self):
         expr = 'let O = Sql.Database("h","db",[Query="WITH C AS (SELECT 1 a) SELECT * FROM C JOIN dbo.T1 t ON 1=1"]) in O'
-        self.assertEqual(parse_m_source(expr)["objects"], [{"schema": "dbo", "name": "T1"}])
+        self.assertEqual(parse_m_source(expr)["objects"], [{"database": "db", "schema": "dbo", "name": "T1"}])
 
     def test_sql_in_variable(self):
-        expr = 'let O = Value.NativeQuery(X, SQL, null), SQL = "SELECT a FROM dbo.Salas AS s" in O'
-        self.assertEqual(parse_m_source(expr)["objects"], [{"schema": "dbo", "name": "Salas"}])
+        expr = ('let Origen = Sql.Databases("h"), BD = Origen{[Name="Depo"]}[Data], '
+                'SQL = "SELECT a FROM dbo.Salas AS s" in Value.NativeQuery(BD, SQL, null)')
+        self.assertEqual(parse_m_source(expr)["objects"], [{"database": "Depo", "schema": "dbo", "name": "Salas"}])
 
     def test_query_text_never_returned(self):
         expr = 'let O = Sql.Database("h","db",[Query="SELECT secreto FROM dbo.T1"]) in O'
@@ -41,7 +44,7 @@ class NativeQueryTests(unittest.TestCase):
 class OtherKindsTests(unittest.TestCase):
     def test_reference_to_model_table(self):
         self.assertEqual(parse_m_source("let Origen = vwSGJProductos in Origen"),
-                         {"kind": "reference", "objects": [{"schema": None, "name": "vwSGJProductos"}]})
+                         {"kind": "reference", "objects": [{"database": None, "schema": None, "name": "vwSGJProductos"}]})
         self.assertEqual(parse_m_source("let Source = dvwUsuariosBO, X = Table.SelectColumns(Source,{})  in X")["kind"],
                          "reference")
 

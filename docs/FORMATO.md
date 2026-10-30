@@ -52,16 +52,16 @@ Columnas: nombre, lado origen, lado destino, cardinalidad (con `(defecto)` cuand
 
 Orígenes del modelo (nombre, tipo, detalles de conexión redactados, autenticación) y, por cada tabla usada, el origen de cada partición.
 
-El origen se muestra solo como **esquema y tabla o vista**. No se publica el texto M ni el SQL de las consultas:
+El origen se muestra solo como **base de datos, esquema y tabla o vista**. No se publica el texto M ni el SQL de las consultas:
 
-- **Tabla o vista SQL:** esquema y nombre del origen de navegación.
-- **Consulta SQL:** una fila por tabla o vista de sus FROM y JOIN. Los CTE no cuentan.
+- **Tabla o vista SQL:** base, esquema y nombre del origen de navegación.
+- **Consulta SQL:** una fila por tabla o vista de sus FROM y JOIN, con su base (la de la consulta, o la de un nombre de tres partes). Los CTE no cuentan.
 - **Otra tabla del modelo:** la tabla de la que se parte (sin esquema).
 - **Archivo** (Excel, SharePoint u otro): solo el tipo. La ruta o URL no se publica.
 - **Datos embebidos:** datos escritos en la propia expresión.
 - **Tabla calculada (DAX)** y **grupo de cálculo:** sin origen SQL.
 
-Columnas de la tabla de particiones: tabla, modo, origen, esquema, tabla o vista.
+Columnas de la tabla de particiones: tabla, modo, origen, base de datos, esquema, tabla o vista.
 
 ## Recursos externos
 

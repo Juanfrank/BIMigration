@@ -67,8 +67,22 @@ SQL_HINT = re.compile(r"\bSELECT\b.*\bFROM\b", re.IGNORECASE | re.DOTALL)
 REFERENCE = re.compile(r"^\s*let\s+\w+\s*=\s*([A-Za-z_]\w*)\s*(?:,|\bin\b)", re.IGNORECASE)
 
 
-def _sql_objects(sql):
-    """Tablas y vistas de los FROM y JOIN de un texto SQL. No devuelve el texto."""
+SQL_DATABASE = re.compile(r'\bSql\.Database\s*\(\s*"[^"]*"\s*,\s*"([^"]+)"', re.IGNORECASE)
+NAV_BASE = re.compile(r"(\w+)\s*\{\s*\[\s*Schema\s*=", re.IGNORECASE)
+NATIVE_BASE = re.compile(r"Value\.NativeQuery\s*\(\s*(\w+)", re.IGNORECASE)
+
+
+def _database_of(expr, var):
+    """Nombre de la base de una variable M de la forma: var = Origen{[Name="base"]}[Data]."""
+    m = re.search(r'\b' + re.escape(var) + r'\s*=\s*\w+\s*\{\s*\[\s*Name\s*=\s*"([^"]+)"', expr)
+    return m.group(1) if m else None
+
+
+def _sql_objects(sql, database):
+    """Tablas y vistas de los FROM y JOIN de un texto SQL. No devuelve el texto.
+
+    Un nombre de tres partes (base.esquema.tabla) indica su propia base; si no, se usa database.
+    """
     text = sql.replace('""', '"').replace("#(lf)", "\n").replace("#(tab)", " ")
     text = re.sub(r"/\*.*?\*/", " ", text, flags=re.DOTALL)
     text = re.sub(r"--[^\n]*", " ", text)
@@ -78,14 +92,15 @@ def _sql_objects(sql):
         parts = [a or b for a, b in NAME_PART.findall(m.group(1))]
         if len(parts) == 1 and parts[0].lower() in ctes:
             continue
-        obj = {"schema": parts[-2] if len(parts) >= 2 else None, "name": parts[-1]}
+        obj = {"database": parts[0] if len(parts) == 3 else database,
+               "schema": parts[-2] if len(parts) >= 2 else None, "name": parts[-1]}
         if obj not in objects:
             objects.append(obj)
     return objects
 
 
 def parse_m_source(expr):
-    """Origen de una expresión M de partición: esquema y tabla o vista, sin texto de la consulta.
+    """Origen de una expresión M de partición: base de datos, esquema y tabla o vista, sin texto de la consulta.
 
     kind:    navigation   (Schema/Item de un origen SQL)
              native_query (SQL en Query= o en cualquier literal con SELECT ... FROM)
@@ -93,24 +108,34 @@ def parse_m_source(expr):
              file         (Excel, CSV o JSON; la ruta no se devuelve)
              embedded     (datos escritos en la propia expresión)
              None         (sin origen reconocible)
-    objects: [{"schema": str|None, "name": str}]
+    objects: [{"database": str|None, "schema": str|None, "name": str}]
     """
     if not expr:
         return {"kind": None, "objects": []}
     nav = NAV_ITEM.search(expr)
     if nav:
-        return {"kind": "navigation", "objects": [{"schema": nav.group(1), "name": nav.group(2)}]}
+        base = NAV_BASE.search(expr)
+        database = _database_of(expr, base.group(1)) if base else None
+        return {"kind": "navigation",
+                "objects": [{"database": database, "schema": nav.group(1), "name": nav.group(2)}]}
     sql_literals = [m.group(1) for m in STRING_LITERAL.finditer(expr) if SQL_HINT.search(m.group(1))]
     if sql_literals:
+        database = None
+        sql_db = SQL_DATABASE.search(expr)
+        if sql_db:
+            database = sql_db.group(1)
+        else:
+            native = NATIVE_BASE.search(expr)
+            database = _database_of(expr, native.group(1)) if native else None
         objects = []
         for literal in sql_literals:
-            for obj in _sql_objects(literal):
+            for obj in _sql_objects(literal, database):
                 if obj not in objects:
                     objects.append(obj)
         return {"kind": "native_query", "objects": objects}
     ref = REFERENCE.search(expr)
     if ref:
-        return {"kind": "reference", "objects": [{"schema": None, "name": ref.group(1)}]}
+        return {"kind": "reference", "objects": [{"database": None, "schema": None, "name": ref.group(1)}]}
     if re.search(r"\bTable\.FromRows\b|#table\(", expr):
         return {"kind": "embedded", "objects": []}
     if re.search(r"\b(Excel\.Workbook|Csv\.Document|Json\.Document|File\.Contents|SharePoint\.Files)\b", expr):

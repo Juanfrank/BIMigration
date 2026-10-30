@@ -3,7 +3,7 @@
 - Fuente: `SGC_Civil.pbip` (pbip)
 - Modelo: Incluido (/home/user/BIMigration/processed/SGC_Civil/output/datos/model.json)
 - Capturas: 1.png (Default), 2.png (MenuA)
-- Generado: 2026-10-30 01:44
+- Generado: 2026-10-30 01:45
 
 ## 1. Numeración
 
@@ -422,30 +422,30 @@ Estado guardado (Default) y cada bookmark que afecta a esta página. Los número
 
 El modelo no define orígenes de datos.
 
-| Tabla | Modo | Origen | Esquema | Tabla o vista |
-|---|---|---|---|---|
-| vwSGJAsuntos | import | Tabla o vista SQL | dbo | vwSGJAsuntos |
-| vwSGJAudienciasBO | import | Consulta SQL (tablas referenciadas) | dbo | vwSGJProductos |
-| vwSGJAudienciasBO | import | Consulta SQL (tablas referenciadas) | penal | vwSolicitudesNotificaciones_ccn |
-| vwSGJAudienciasBO | import | Consulta SQL (tablas referenciadas) | dbo | vwSGJAudienciasBO |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwSGCDocumentosTramite |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | AsignacionesAdmisibilidades |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwAsignacionesJueces_Local |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwHistoricoDepositos |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | dvwSalasBO |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwEntradaExpedientesBO |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | dvwTribunalesBO |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwActoresBO |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwSGJSorteo |
-| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | dbo | vwSGJProductos |
-| vwSGJTipoProcedimiento | import | Tabla o vista SQL | dbo | vwSGJTipoProcedimiento |
-| vwSGJTipoResultados | import | Tabla o vista SQL | dbo | vwSGJTipoResultados |
-| dvwSalasBO | import | Consulta SQL (tablas referenciadas) | dbo | Salas |
-| dvwTribunalesBO | import | Tabla o vista SQL | dbo | dvwTribunalesBO |
-| Fechas | import | Tabla calculada (DAX) | — | — |
-| Dim_Tipo_Tribunal | import | Tabla o vista SQL | dbo | Dim_Tipo_Tribunal |
-| Dim_Instancia | import | Tabla o vista SQL | dbo | Dim_Tipo_Instancia |
-| vwRelacionTribunalSUSEC | import | Tabla o vista SQL | dbo | vwRelacionTribunalSUSEC |
+| Tabla | Modo | Origen | Base de datos | Esquema | Tabla o vista |
+|---|---|---|---|---|---|
+| vwSGJAsuntos | import | Tabla o vista SQL | PolicticasPublicas | dbo | vwSGJAsuntos |
+| vwSGJAudienciasBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwSGJProductos |
+| vwSGJAudienciasBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | penal | vwSolicitudesNotificaciones_ccn |
+| vwSGJAudienciasBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwSGJAudienciasBO |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwSGCDocumentosTramite |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | DepositoDocumentos | dbo | AsignacionesAdmisibilidades |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwAsignacionesJueces_Local |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwHistoricoDepositos |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | dvwSalasBO |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | DataMart | dbo | vwEntradaExpedientesBO |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | dvwTribunalesBO |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwActoresBO |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwSGJSorteo |
+| vwSGJEntradaExpedientesBO | import | Consulta SQL (tablas referenciadas) | PolicticasPublicas | dbo | vwSGJProductos |
+| vwSGJTipoProcedimiento | import | Tabla o vista SQL | PolicticasPublicas | dbo | vwSGJTipoProcedimiento |
+| vwSGJTipoResultados | import | Tabla o vista SQL | PolicticasPublicas | dbo | vwSGJTipoResultados |
+| dvwSalasBO | import | Consulta SQL (tablas referenciadas) | DepositoDocumentos | dbo | Salas |
+| dvwTribunalesBO | import | Tabla o vista SQL | PolicticasPublicas | dbo | dvwTribunalesBO |
+| Fechas | import | Tabla calculada (DAX) | — | — | — |
+| Dim_Tipo_Tribunal | import | Tabla o vista SQL | Staging_BD | dbo | Dim_Tipo_Tribunal |
+| Dim_Instancia | import | Tabla o vista SQL | Staging_BD | dbo | Dim_Tipo_Instancia |
+| vwRelacionTribunalSUSEC | import | Tabla o vista SQL | Staging_BD | dbo | vwRelacionTribunalSUSEC |
 
 ## Recursos externos
 
