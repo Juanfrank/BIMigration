@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "33e2c6a5951c79604877",
+  "position": {
+    "x": 11.428571428571429,
+    "y": 998.57142857142867,
+    "z": 16000,
+    "height": 475.71428571428572,
+    "width": 652.85714285714289,
+    "tabOrder": 15000
+  },
+  "visual": {
+    "visualType": "aiNarratives",
+    "objects": {
+      "narrativeSelection": [
+        {
+          "properties": {
+            "dismissSelectionScreen": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "userPrompt": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'genera un informe de audiencias donde podamos saber para que mes estan finado audiecnias los tribunales y este analisis debe ser por departamento, por materia y por sala, tambien analizar lka modalidad de audiecnias si son virtuales o presenciales. una seccion aparte de que apartir de la fecha de hoy (fecha actual) indicar por departamento, sala , tribunal cuales estan fiajndo a mas de tres (3) meses es decir para cuando\n'"
+                }
+              }
+            },
+            "selectedVisualsJson": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"isEntireReportSelected\":false,\"sections\":{\"83dbb7e3c71710bae5d3\":{\"isEntireSectionSelected\":true}}}'"
+                }
+              }
+            },
+            "useAllVisuals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

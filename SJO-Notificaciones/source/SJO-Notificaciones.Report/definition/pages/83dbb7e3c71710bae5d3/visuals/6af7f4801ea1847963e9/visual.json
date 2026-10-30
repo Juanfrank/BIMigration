@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "6af7f4801ea1847963e9",
+  "position": {
+    "x": 694.28571428571433,
+    "y": 861.42857142857144,
+    "z": 18000,
+    "height": 612.85714285714289,
+    "width": 878.57142857142867,
+    "tabOrder": 18000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Tipo_Tribunal"
+                    }
+                  },
+                  "Property": "Materia Tribunal"
+                }
+              },
+              "queryRef": "Dim_Tipo_Tribunal.Materia Tribunal",
+              "nativeQueryRef": "Materia Tribunal"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dvwSalasBO"
+                    }
+                  },
+                  "Property": "Sala"
+                }
+              },
+              "queryRef": "dvwSalasBO.Sala",
+              "nativeQueryRef": "Sala"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dvwUsuariosBO"
+                    }
+                  },
+                  "Property": "NombreCompleto"
+                }
+              },
+              "queryRef": "dvwUsuariosBO.NombreCompleto",
+              "nativeQueryRef": "NombreCompleto"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "05b5ea57c03780432301",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_Jueces"
+              }
+            },
+            "Property": "cod_juez"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "e209b320392a35b85e88",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_Jueces"
+              }
+            },
+            "Property": "juez_de_carrera"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

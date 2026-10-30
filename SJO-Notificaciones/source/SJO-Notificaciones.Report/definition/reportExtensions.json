@@ -1,0 +1,471 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "vwSGJEntradaExpedientesBO",
+      "measures": [
+        {
+          "name": "audiencia por tramite",
+          "dataType": "Double",
+          "expression": "[Días con Audiencia Programada]/progra",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJAudienciasBO",
+                "name": "Días con Audiencia Programada"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Contenciosos mayor a 6 meses",
+          "dataType": "Double",
+          "expression": "\nCALCULATE(\n    [Cantidad Abiertos por Rangos], \n  REMOVEFILTERS(Fechas),\n    KEEPFILTERS( vwSGJTipoProcedimiento[Tipo Procedimiento] = \"CONTENCIOSO\"), Rangos[Value] > 180\n)",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Cantidad Abiertos por Rangos"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Cantidad Abiertos por Rangos",
+          "dataType": "Double",
+          "expression": "\nCOUNTROWS(\n    CALCULATETABLE(\n        vwSGJEntradaExpedientesBO,\n        TREATAS( {\"Abierto\"}, vwSGJEntradaExpedientesBO[Estado Abierto/Cerrado]),\n        TREATAS( {\"1\"}, vwSGJEntradaExpedientesBO[Incluir]),\n        TREATAS( VALUES(Rangos[Value]), vwSGJEntradaExpedientesBO[DuracionDias])\n    )\n) +\nCOUNTROWS(\n    FILTER(\n        CALCULATETABLE(\n            vwSGJEntradaExpedientesBO,\n            TREATAS( {\"Abierto\"}, vwSGJEntradaExpedientesBO[Estado Abierto/Cerrado]),\n            TREATAS( {\"1\"}, vwSGJEntradaExpedientesBO[Incluir]),\n            vwSGJEntradaExpedientesBO[DuracionDias] > 9999\n        ),\n        MIN(vwSGJEntradaExpedientesBO[DuracionDias],9999) IN VALUES(Rangos[Value])\n    )\n)",
+          "formatString": "#,0",
+          "displayFolder": "_Medidas"
+        },
+        {
+          "name": "Graciosos mayor a 3 meses",
+          "dataType": "Double",
+          "expression": "\nCALCULATE(\n    [Cantidad Abiertos por Rangos],    REMOVEFILTERS(Fechas),\n    KEEPFILTERS( vwSGJTipoProcedimiento[Tipo Procedimiento] = \"GRACIOSO\"), Rangos[Value] > 90\n)",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Cantidad Abiertos por Rangos"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Secretariales mayor a 15 dias",
+          "dataType": "Double",
+          "expression": "\nCALCULATE(\n    [Cantidad Abiertos por Rangos],   REMOVEFILTERS(Fechas), \n    KEEPFILTERS( vwSGJTipoProcedimiento[Tipo Procedimiento] = \"SECRETARIAL\"), Rangos[Value] > 15\n)",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Cantidad Abiertos por Rangos"
+              }
+            ]
+          }
+        },
+        {
+          "name": "RangoDAbierto",
+          "dataType": "Double",
+          "expression": "SWITCH(TRUE(),\n    [Duración Abiertos] < 2, \"Menos de un dia\",     \n    [Duración Abiertos]   >= 2 && [Duración Abiertos]   < 5, \"Entre 2 y 5 dias\",\n    [Duración Abiertos]   >= 5 && [Duración Abiertos]  < 10, \"Entre 5 y 10 dias\",  \n    [Duración Abiertos]   >= 15 && [Duración Abiertos]   < 30, \"Entre 15 y 30 dias\",\n    [Duración Abiertos]   >= 30 && [Duración Abiertos]   < 90, \"Entre 30 y 90 dias\",\n       [Duración Abiertos]   >= 90, \"Mayor o igual a 90 dias\")",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Duración Abiertos"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Proporcion Acuerdos por caso",
+          "dataType": "Double",
+          "expression": "[Trámites de Casos con Acuerdo]/[Casos con Acuerdo]",
+          "formatString": "0.00",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Trámites de Casos con Acuerdo"
+              },
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Casos con Acuerdo"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Salidaacuerdo",
+          "dataType": "Double",
+          "expression": "CALCULATE([Salida Trámites], REMOVEFILTERS( vwSGJEntradaExpedientesBO[Acuerdo] ) )",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Salida Trámites"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Abiertosinfecha",
+          "dataType": "Double",
+          "expression": "[Abiertos/Pendientes] / fec                       ",
+          "displayFolder": "_CCalculada",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Abiertos/Pendientes"
+              }
+            ]
+          }
+        },
+        {
+          "name": "salidaPorcentualcasos",
+          "dataType": "Double",
+          "expression": "[Trámites de Casos con Acuerdo]/[Salidaacuerdo]",
+          "formatString": "0.00\\ %;-0.00\\ %;0.00\\ %",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Trámites de Casos con Acuerdo"
+              },
+              {
+                "schema": "extension",
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Salidaacuerdo"
+              }
+            ]
+          }
+        },
+        {
+          "name": "DEnvioTramites",
+          "dataType": "Double",
+          "expression": "vw",
+          "displayFolder": "_Medidas"
+        },
+        {
+          "name": "Valor_Obtenidosalamovi",
+          "dataType": "Text",
+          "expression": "\nVAR idActual = SELECTEDVALUE(vwCasoMovimientos_sj[IdSalaDestino])\nRETURN LOOKUPVALUE(dvwSalasBO[Sala], dvwSalasBO[IdSala], idActual)"
+        },
+        {
+          "name": "Q1",
+          "dataType": "Double",
+          "expression": "PERCENTILEX.INC(ALLSELECTED(Medidas [sali ), Tabla[Valor], 0.25))",
+          "displayFolder": "_Medidas",
+          "references": {
+            "unrecognizedReferences": true
+          }
+        },
+        {
+          "name": "Target",
+          "dataType": "Double",
+          "expression": "1"
+        },
+        {
+          "name": "TiempoTranscurrido",
+          "dataType": "Integer",
+          "expression": "\nAVERAGE( DATEDIFF( 'Tabla'[FechaInicio], , DAY ) )",
+          "displayFolder": "_CCalculada",
+          "references": {
+            "unrecognizedReferences": true
+          }
+        },
+        {
+          "name": "Medida 2",
+          "dataType": "Double",
+          "expression": "YEAR()"
+        },
+        {
+          "name": "Medida 3",
+          "dataType": "Double",
+          "expression": "YEAR(FechaInicioCaso)",
+          "displayFolder": "_CCalculada"
+        }
+      ]
+    },
+    {
+      "name": "vwSGJAudienciasBO",
+      "measures": [
+        {
+          "name": "AudienciaTRa",
+          "dataType": "Double",
+          "expression": "AVERAGEX(\r\nSUMMARIZECOLUMNS( vwSGJEntradaExpedientesBO[IdTramite], \"A\", CALCULATE( [Audiencias Programadas], ALL(Fechas[Fechas]))), [A])",
+          "formatString": "0.0\\ \"aud/tram\"",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJAudienciasBO",
+                "name": "Audiencias Programadas"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PromeSalida",
+          "dataType": "Double",
+          "expression": "\nCALCULATE(\n    AVERAGE(vwSGJEntradaExpedientesBO[DuracionDias]),\n    KEEPFILTERS(NOT ISBLANK(vwSGJEntradaExpedientesBO[FechaSalida])),\n    USERELATIONSHIP(vwSGJEntradaExpedientesBO[idJuez],dvwUsuariosBO[IdUsuario]),\n    USERELATIONSHIP(Fechas[Fechas],vwSGJEntradaExpedientesBO[FechaSalida])\n)",
+          "formatString": "0",
+          "displayFolder": "_Medidas"
+        },
+        {
+          "name": "Celebracion primera audiencia",
+          "dataType": "Double",
+          "expression": "CALCULATE( [Intervalo Entrada Celebración], KEEPFILTERS( 'vwSGJAudienciasBO'[Orden]= 1 ))",
+          "formatString": "0",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJAudienciasBO",
+                "name": "Intervalo Entrada Celebración"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Porcentaje de total general",
+          "dataType": "Double",
+          "expression": "DIVIDE([Campo], COLLAPSEALL([Campo], Eje))",
+          "displayFolder": "_Medidas",
+          "references": {
+            "unrecognizedReferences": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "vwSGJAsuntos",
+      "measures": [
+        {
+          "name": "Asuntosfiltrados",
+          "dataType": "Double",
+          "expression": "CALCULATE(asu , REMOVEFILTERS( vwSGJEntradaExpedientesBO[Acuerdo] ) )\r\n "
+        }
+      ]
+    },
+    {
+      "name": "vwCasoMovimientos_sj",
+      "measures": [
+        {
+          "name": "Movimientos",
+          "dataType": "Double",
+          "expression": "\nCOUNTROWS(\n    CALCULATETABLE( \n        vwCasoMovimientos_sj, \n        KEEPFILTERS( vwCasoMovimientos_sj[IdTribunalOrigen] <> vwCasoMovimientos_sj[IdTribunalDestino] ), \n        TREATAS( VALUES ( dvwSalasBO[IdSala] ) , vwCasoMovimientos_sj[IdSalaOrigen]),\n        CROSSFILTER( vwSGJEntradaExpedientesBO[IdSala3], dvwSalasBO[IdSala], NONE)\n    )\n)",
+          "formatString": "#,0"
+        },
+        {
+          "name": "Duración Movimiento",
+          "dataType": "Double",
+          "expression": "\nAVERAGEX(\n    CALCULATETABLE( \n        vwCasoMovimientos_sj, \n        KEEPFILTERS ( vwCasoMovimientos_sj[IdTribunalOrigen] <> vwCasoMovimientos_sj[IdTribunalDestino] ), \n        TREATAS( VALUES ( dvwSalasBO[IdSala] ) , vwCasoMovimientos_sj[IdSalaOrigen]),\n        CROSSFILTER( vwSGJEntradaExpedientesBO[IdSala3], dvwSalasBO[IdSala], NONE)\n    ), \n    VAR _1 = MIN(vwDepositoDocumento[FechaDeposito])\n    VAR _2 = vwCasoMovimientos_sj[FechaCreacion]\n    RETURN\n    IF( ISBLANK(_1) || ISBLANK( _2) || _1 > _2, BLANK(),\n    DATEDIFF( _1, _2, DAY)\n    )\n)",
+          "formatString": "#,0"
+        }
+      ]
+    },
+    {
+      "name": "Tipo Fallo Individual",
+      "measures": [
+        {
+          "name": "PruebaSalidaTramiteIndividual",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE ( \n    [Salida Trámites],\n    KEEPFILTERS ( NOT ISBLANK('Penal.vwTramiteParteDecisiones_sj'[IdTramiteParte]) ),\n    CROSSFILTER ( RelPersonaTramite[IdTramiteParte], 'Penal.vwTramiteParteDecisiones_sj'[IdTramiteParte], Both ),\n    CROSSFILTER ( RelPersonaTramite[CodPersona], vwSGJPersonaEntidad[CodPersona], Both ),\n    CROSSFILTER ( 'Penal.vwCentroInternamientos'[IdCentroInternamiento], 'Penal.vwHistoricoEstadoJuridicos_bo'[IdCentroInternamiento], None ),\n    USERELATIONSHIP ( 'Penal.vwTramiteParteDecisiones_sj'[IdCentroReclusion], 'Penal.vwCentroInternamientos'[IdCentroInternamiento] )\n)",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "Salida Trámites"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PruebaSalidaTramiteEstatus",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE ( [Estatus Persona],\n    CROSSFILTER(RelPersonaTramite[IdTramiteParte], 'Penal.vwTramiteParteDecisiones_sj'[IdTramiteParte], Both),\n    CROSSFILTER (RelPersonaTramite[CodPersona], vwSGJPersonaEntidad[CodPersona], Both)\n)",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "entity": "Penal.vwHistoricoEstadoJuridicos_bo",
+                "name": "Estatus Persona"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PruebaCon Estatus Privativo de Libertad",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE(\n    [Estatus Persona],\n    KEEPFILTERS( 'Penal.vwTipoEstadoJuridicos_bo'[TipoEstadoJuridico] IN {\"Arrestado/a\", \"Condenado/a\", \"Preso/a\", \"Preso/a Preventivo/a\"} ),\n    CROSSFILTER(RelPersonaTramite[IdTramiteParte], 'Penal.vwTramiteParteDecisiones_sj'[IdTramiteParte], Both),\n CROSSFILTER (RelPersonaTramite[CodPersona], vwSGJPersonaEntidad[CodPersona], Both)\n)",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "entity": "Penal.vwHistoricoEstadoJuridicos_bo",
+                "name": "Estatus Persona"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PruebaEstatusPersona",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE(\n    [Estatus Persona],\n    CROSSFILTER(RelPersonaTramite[IdTramiteParte], 'Penal.vwTramiteParteDecisiones_sj'[IdTramiteParte], Both),\n CROSSFILTER (RelPersonaTramite[CodPersona], vwSGJPersonaEntidad[CodPersona], Both)\n)",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "entity": "Penal.vwHistoricoEstadoJuridicos_bo",
+                "name": "Estatus Persona"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PruebaCon Estatus Privativo de Libertad con Centro",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE(\n    [Estatus Persona],\n    KEEPFILTERS( 'Penal.vwTipoEstadoJuridicos_bo'[TipoEstadoJuridico] IN {\"Arrestado/a\", \"Condenado/a\", \"Preso/a\", \"Preso/a Preventivo/a\"} ),\n    KEEPFILTERS( 'Penal.vwCentroInternamientos'[CentroInternamiento] <> BLANK()),\n    CROSSFILTER(RelPersonaTramite[IdTramiteParte], 'Penal.vwTramiteParteDecisiones_sj'[IdTramiteParte], Both),\n CROSSFILTER (RelPersonaTramite[CodPersona], vwSGJPersonaEntidad[CodPersona], Both)\n)",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "entity": "Penal.vwHistoricoEstadoJuridicos_bo",
+                "name": "Estatus Persona"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "dvwTribunalesBO",
+      "measures": [
+        {
+          "name": "PruebaCasos en la Etapa Preparatoria",
+          "dataType": "Double",
+          "expression": "\nVAR _AsuntosExcluir = {\"ALLANAMIENTO REGISTRO DE PROPIEDAD\", \"ORDEN DE ARRESTO Y CONDUCENCIA\"}\nVAR _FallosFin = {8,9,10,18,20,25,30,31,45,46,70,1091,1092,19,21,37,44,4,22,35,63,67,1093,1096,1097}\nVAR _AsuntosFin = {\"ARCHIVO DEL EXPEDIENTE\", \"ARCHIVO PROVISIONAL\"}\nVAR _TramitesPreparatoria =\nCALCULATETABLE ( \n    VALUES(vwSGJEntradaExpedientesBO[IdTramite]),\n    vwSGJEntradaExpedientesBO[Etapa] = \"1- PREPARATORIA\", \n    vwSGJEntradaExpedientesBO[IdTipoProcedimiento2] IN {1,2}, \n    vwSGJCasos[FechaInicioCaso] >= DATE(2024,1,1), \n    NOT vwSGJAsuntos[Asunto] IN _AsuntosExcluir,\n    NOT 'Tipo Falloo Salida'[IdTipoFallo] IN _FallosFin, \n    FILTER( vwSGJEntradaExpedientesBO, NOT (RELATED(vwSGJAsuntos[Asunto]) IN _AsuntosFin && RELATED('Tipo Falloo Salida'[Acoge]) = TRUE())),\n    vwSGJEntradaExpedientesBO[Acuerdo] = BLANK()\n)\nVAR _CasosEtapaPreparatoria =\nCALCULATETABLE(\n    vwSGJCasos, TREATAS( _TramitesPreparatoria, vwSGJCasos[IdUltimoTramiteActual])\n)\nRETURN\nCOUNTROWS (_CasosEtapaPreparatoria)",
+          "formatString": "#,0"
+        },
+        {
+          "name": "PruebaCasos Intimados",
+          "dataType": "Double",
+          "expression": "\nVAR _FallosFin = {8,9,10,18,20,25,30,31,45,46,70,1091,1092,19,21,37,44,4,22,35,63,67,1093,1096,1097}\nVAR _T =\nFILTER(\n    vwSGJCasos, [PruebaCasos Pasibles de Intimación] > 0\n)\nVAR _FalloIntimacion = 77\nVAR _TipoAsuntoIntimacion = {315,2358}\nVAR _TipoDocumentoIntimacion = {462,559,887}\nVAR _Int = \nCALCULATETABLE(\n    vwSGJCasos, FILTER( vwSGJEntradaExpedientesBO, RELATED( 'Tipo Falloo Salida'[IdTipoFallo] ) = _FalloIntimacion || ( vwSGJEntradaExpedientesBO[IdTipoAsunto] IN _TipoAsuntoIntimacion && RELATED ( 'Tipo Falloo Salida'[Acoge] ) = TRUE()) || CALCULATE( COUNTROWS( vwSGJProductos ), CALCULATETABLE( vwSGJProductos, vwSGJProductos[IdTipoDocumento] IN _TipoDocumentoIntimacion || vwSGJProductos[IdTipoFallo] = _FalloIntimacion )) > 0\n    ))\nVAR _R = INTERSECT( _T, _Int )\nRETURN\nCOUNTROWS( _R )",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "dvwTribunalesBO",
+                "name": "PruebaCasos Pasibles de Intimación"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PruebaCasos Pasibles de Intimación",
+          "dataType": "Double",
+          "expression": "\nVAR _FallosFin = {8,9,10,18,20,25,30,31,45,46,70,1091,1092,19,21,37,44,4,22,35,63,67,1093,1096,1097}\nVAR _T = \nADDCOLUMNS(\n    -- Casos en la Etapa Preparatoria --\n    SUMMARIZECOLUMNS(\n    vwSGJCasos[IdCaso], \n    vwSGJCasos[FechaInicioCaso],\n        \"A\", [PruebaCasos en la Etapa Preparatoria]\n    ), \"D\",\n    VAR _Plazo = SWITCH( TRUE(),\n        -- Preventivo y complejo, 8 meses\n        CALCULATE( COUNTROWS(vwSGJCasos), vwSGJCasos[EsComplejo] = TRUE()) > 0 && (CALCULATE(COUNTROWS(vwSGJProductos),vwSGJProductos[IdTipoFallo] in {62,39})>0 || CALCULATE(COUNTROWS('Penal.vwTramiteParteDecisiones_sj'),'Penal.vwTramiteParteDecisiones_sj'[IdTipoFallo] in {62,39})>0), 240,\n        -- Preventivo, 3 meses\n        CALCULATE(COUNTROWS(vwSGJProductos),vwSGJProductos[IdTipoFallo] in {62,39})>0 || CALCULATE(COUNTROWS('Penal.vwTramiteParteDecisiones_sj'),'Penal.vwTramiteParteDecisiones_sj'[IdTipoFallo] in {62,39})>0, 90,\n        -- No preventivo y complejo --\n        CALCULATE ( COUNTROWS(vwSGJCasos), vwSGJCasos[EsComplejo] = TRUE()) > 0, 360,\n        180\n    )\n    RETURN\n    IF ( DATEDIFF( [FechaInicioCaso], TODAY(), DAY ) >= _Plazo, 1, BLANK())\n)\nRETURN\nSUMX( _T, [D] )",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "dvwTribunalesBO",
+                "name": "PruebaCasos en la Etapa Preparatoria"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PruebaCasos Pendientes de Intimar",
+          "dataType": "Double",
+          "expression": "\nVAR _FallosFin = {8,9,10,18,20,25,30,31,45,46,70,1091,1092,19,21,37,44,4,22,35,63,67,1093,1096,1097}\nVAR _T =\nSUMMARIZECOLUMNS( vwSGJCasos[IdCaso], \"Pasibles\", [PruebaCasos Pasibles de Intimación], \"Intimados\", [PruebaCasos Intimados] )\nRETURN\nCOUNTROWS( FILTER( _T, ISBLANK( [Intimados])))",
+          "formatString": "#,0",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "dvwTribunalesBO",
+                "name": "PruebaCasos Pasibles de Intimación"
+              },
+              {
+                "schema": "extension",
+                "entity": "dvwTribunalesBO",
+                "name": "PruebaCasos Intimados"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medidas",
+      "measures": [
+        {
+          "name": "Cantidad not",
+          "dataType": "Double",
+          "expression": "COUNT(penal_vwAccionesNotificaciones_ccn[FechaCreacion])",
+          "formatString": "0"
+        },
+        {
+          "name": "%Salas Al dia 2",
+          "dataType": "Double",
+          "expression": "sal"
+        }
+      ]
+    },
+    {
+      "name": "Penal_vwSolicitudesNotificaciones_ccn",
+      "measures": [
+        {
+          "name": "CAntNot",
+          "dataType": "Double",
+          "expression": "COUNTROWS(Penal_vwDocumentosSolicitudNotificacion_ccn)"
+        }
+      ]
+    },
+    {
+      "name": "UsuarioEntidadPortal",
+      "measures": [
+        {
+          "name": "ITP",
+          "dataType": "Double",
+          "expression": "[% Entrada Trámites en Portal]",
+          "displayFolder": "_Medidas",
+          "references": {
+            "measures": [
+              {
+                "entity": "vwSGJEntradaExpedientesBO",
+                "name": "% Entrada Trámites en Portal"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "vwSGJCasos",
+      "measures": [
+        {
+          "name": "AÑo-Inicio-Caso",
+          "dataType": "Double",
+          "expression": "YEAR()"
+        }
+      ]
+    }
+  ]
+}

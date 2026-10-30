@@ -1,0 +1,474 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {},
+          "nodeIndex": "dvwTribunalesBO",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "Tipo Fallo Individual",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "vwCasoMovimientos_sj",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "vwSGJAsuntos",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "vwSGJAudienciasBO",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "vwSGJEntradaExpedientesBO",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 1,
+      "scrollPosition": {
+        "x": 0,
+        "y": 89
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "Tipo Fallo Individual",
+          "nodeLineageTag": "b710392a-1af3-4009-97b8-5111a8d7316c",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 6
+        }
+      ],
+      "name": "Disposición 1",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 2,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 80.140735373250436,
+            "y": 690.37739625999382
+          },
+          "nodeIndex": "vwSGJEntradaExpedientesBO",
+          "nodeLineageTag": "d0788a4f-6875-4ef0-a333-18b79bbd511d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Disposición 2",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 3,
+      "scrollPosition": {
+        "x": 0,
+        "y": 301.02827923051512
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 898.19945718398139,
+            "y": 0
+          },
+          "nodeIndex": "penal_vwConfiguracionesNotificaciones_ccn",
+          "nodeLineageTag": "f7198f7f-4de3-4b63-bfaa-4b2e916f31b8",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 157.96595280548263,
+            "y": 519.8050494699196
+          },
+          "nodeIndex": "Penal_vwDocumentosSolicitudNotificacion_ccn",
+          "nodeLineageTag": "41bc4fd0-6c16-4ca8-b876-44306da925cd",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 830.34471928261917,
+            "y": 305.95981487168677
+          },
+          "nodeIndex": "Penal_vwPartesSolicitudNotificacion_ccn",
+          "nodeLineageTag": "5feeefd3-d75b-44dc-92ce-64ec20dcbccc",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 55.155743864024714,
+            "y": 0
+          },
+          "nodeIndex": "Penal_vwSolicitudesNotificaciones_ccn",
+          "nodeLineageTag": "df68d0e9-0f98-441b-b1e7-e4200cdcb006",
+          "size": {
+            "height": 404.86641312028729,
+            "width": 340.92261729911644
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 421.16008769561563,
+            "y": 583.54737901362375
+          },
+          "nodeIndex": "penal_vwViasNotificacionCitacion_ccn",
+          "nodeLineageTag": "5373c113-551a-4b32-a8e8-7453cc0c16df",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 30.232347300234096,
+            "y": 822.6341633700456
+          },
+          "nodeIndex": "penal_vwMediosNotificaciones_ccn",
+          "nodeLineageTag": "832632ba-71c2-487b-b289-c6576621c7b5",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 417.04767933795733,
+            "y": 733.6502840681527
+          },
+          "nodeIndex": "Penal_vwCentrosMensajeria_ccn",
+          "nodeLineageTag": "a61f9897-36fe-460d-9b93-a1bddbb0568f",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 2606.9051297910155,
+            "y": 661.68313780913184
+          },
+          "nodeIndex": "Penal.vwCalificacionesInfracciones_gp",
+          "nodeLineageTag": "31d8b0b5-b042-4e21-914f-eefc73ba5d5c",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 21
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 974.22617299116473
+          },
+          "nodeIndex": "Penal.vwCentroInternamientos",
+          "nodeLineageTag": "7539c2af-22cc-4461-9724-f1cdd476ecdf",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 19
+        },
+        {
+          "location": {
+            "x": 803.6140649578399,
+            "y": 1210.2784189957897
+          },
+          "nodeIndex": "Penal.vwHistoricoEstadoJuridicos_bo",
+          "nodeLineageTag": "d8f70c61-2e10-46c8-a9d4-4a70120f85b6",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 20
+        },
+        {
+          "location": {
+            "x": 871.46880285920224,
+            "y": 840.572901367269
+          },
+          "nodeIndex": "Penal.vwTramiteParteDecisiones_sj",
+          "nodeLineageTag": "7aa364eb-b991-44c8-8f46-406a4c495465",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1936.5825674927087,
+            "y": 1303.2188416038307
+          },
+          "nodeIndex": "RelPersonaTramite",
+          "nodeLineageTag": "0310129f-ea08-4c1d-9fdb-b0db35e29fa9",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1533.5665484421927,
+            "y": 600.8194972533073
+          },
+          "nodeIndex": "Tipo Fallo Individual",
+          "nodeLineageTag": "b710392a-1af3-4009-97b8-5111a8d7316c",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1767.9738248287172,
+            "y": 1022.3413539132857
+          },
+          "nodeIndex": "vwSGJTipoAudiencias",
+          "nodeLineageTag": "c56b1f8b-b35b-4312-bbe0-217c1dbc1607",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1870.7840337701755,
+            "y": 609.0443139686239
+          },
+          "nodeIndex": "vwSGJAudienciasBO",
+          "nodeLineageTag": "eb64a9f0-c7b9-43bd-bd4c-00fe181c692f",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1038.0213413443644,
+            "y": 531.731039982166
+          },
+          "nodeIndex": "vwSGJEstatus",
+          "nodeLineageTag": "ea7e964d-1901-4c54-878d-0ce688091c6a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1811.1541125841297,
+            "y": 235.63763823076653
+          },
+          "nodeIndex": "vwSGJEstatusAudiencia",
+          "nodeLineageTag": "d8a6562a-de10-4e0c-80e7-8d7118b233ce",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 721.36589780467352,
+            "y": 517.3376107303618
+          },
+          "nodeIndex": "vwSGJEntradaExpedientesBO",
+          "nodeLineageTag": "d0788a4f-6875-4ef0-a333-18b79bbd511d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1473.9366272561469,
+            "y": 1179.4353563133523
+          },
+          "nodeIndex": "vwSGJEECEstatus",
+          "nodeLineageTag": "5216f6b6-344c-4bde-a0ab-4fea8d13c7aa",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1169.618408789431,
+            "y": 1162.9857228827188
+          },
+          "nodeIndex": "vwHistoricoDepositos",
+          "nodeLineageTag": "6e04e1c1-9ebb-49b4-b4a2-c5e9c284a791",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 1677.5008409602337,
+            "y": 0
+          },
+          "nodeIndex": "Estatus Solicitud",
+          "nodeLineageTag": "789ab166-9cc8-488c-8ddf-cc719a3488b9",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 22
+        },
+        {
+          "location": {
+            "x": 1513.004506653901,
+            "y": 1580.8064057457677
+          },
+          "nodeIndex": "vwSGJPersonaEntidad",
+          "nodeLineageTag": "2252f477-99c1-45d4-a561-8c4b707de8dc",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Disposición 3",
+      "zoomValue": 48.633302582305653,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 4,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "Penal_vwSolicitudesNotificaciones_ccn",
+          "nodeLineageTag": "df68d0e9-0f98-441b-b1e7-e4200cdcb006",
+          "size": {
+            "height": 503,
+            "width": 331
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 457.42497243258754,
+            "y": 5.772840549884279
+          },
+          "nodeIndex": "vwSGJAudienciasBO",
+          "nodeLineageTag": "eb64a9f0-c7b9-43bd-bd4c-00fe181c692f",
+          "size": {
+            "height": 571.52682037052148,
+            "width": 234
+          },
+          "zIndex": 2
+        }
+      ],
+      "name": "Disposición 4",
+      "zoomValue": 50.346892102823148,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Disposición 4",
+  "defaultDiagram": "Todas las tablas"
+}

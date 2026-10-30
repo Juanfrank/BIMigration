@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "7d3977c42252de91ae0d",
+  "position": {
+    "x": 806,
+    "y": 3439,
+    "z": 4000,
+    "height": 277,
+    "width": 431,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "aiNarratives",
+    "objects": {
+      "narrativeSelection": [
+        {
+          "properties": {
+            "dismissSelectionScreen": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "userPrompt": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Genera un informe analítico profundo con enfoque Lean: 1. Resumen General: Evalúa el total solicitado, completados, % de solución total, carga diaria y % fuera de plazo. 2. Análisis Flujos de Valor (A y B): Compara Lead Time, nivel de producción y % de solución. Identifica cuellos de botella contrastando tiempos de la fase interna vs ejecución y evalúa el impacto del ''domicilio desconocido''. 3. Vías y Medios: Analiza la alta dependencia de la vía Física frente a la telemática. 4. Desempeño de Alguaciles: Analiza su cumplimiento según volumen de trabajo y correlaciona con la tasa de ''domicilio desconocido''. Clasifica y agrupa a los alguaciles por su contribución operativa. 5. Aplazamientos: Compara motivos de aplazamiento 2025-2026, destacando las causas raíz principales. 6. Tendencias CCN: Analiza la tendencia de entradas vs salidas y el nivel de solución por Centro (CCN). Usa lenguaje institucional orientado a la mejora continua.'"
+                }
+              }
+            },
+            "selectedVisualsJson": {
+              "expr": {
+                "Literal": {
+                  "Value": "'{\"isEntireReportSelected\":false,\"sections\":{\"abbf28979a20ac24b20a\":{\"isEntireSectionSelected\":false,\"visuals\":{\"95671549d2b579963b9b\":true,\"6114b10a5d0d8226014e\":true,\"5e46eef54e16a4d9c9c9\":true,\"d968887b70262301320c\":true,\"1c48aef553200e3a0601\":true,\"3bce1c7cb91462371821\":true,\"e24114a7b08d4d2782c1\":true,\"78052e68a352b56b3ddd\":true,\"37839220ad0738d7ab26\":true,\"caac12604decaa54a1b1\":true,\"bdef301e0dc08268929e\":true,\"ae411559446a4b2b9e94\":true,\"39233a1e7ae3ab9c56e4\":true,\"67daee638140c64e5a2c\":true,\"d332edc061b6296072a9\":true,\"cf1574000b4385150da6\":true,\"be0a5484b16600b546a5\":true,\"f75ae06a85004414bb16\":true,\"76dc1c81499abbe4e77a\":true,\"34faf6562c9e0cbe715b\":true,\"c4d0aa608aa0003419ac\":true,\"735c58ab375c37b909ba\":true,\"dc65746a0000b6902912\":true,\"f3c89b7dd8937e812011\":true,\"1d479bd0d541e4ca7ee6\":true,\"544fb2430e1e9eac807a\":true,\"458633c4c39cb02b0b26\":true,\"1c9a5f60a62e4aecc148\":true,\"33340b41322326c84087\":true,\"eea9f12ec51a0097dd14\":true,\"9b678146a786b7e82b39\":true,\"6eeb4760343109196b94\":true,\"5aee69f7a351ec49303b\":true,\"b0f38c0200e2c4b2c10b\":true,\"8708123dda83c0c00857\":true,\"76f8ad1895a690a10090\":true,\"2cc43c812e0c72e1800e\":true,\"958210f667768c4ed520\":true,\"5733e40180d7c99c97e8\":true,\"426012da565ad9827282\":true,\"1a95c69872a6349d3210\":true}}}}'"
+                }
+              }
+            },
+            "useAllVisuals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
