@@ -12,6 +12,9 @@ import argparse
 import json
 import sys
 
+from bim_core import parse_m_source, strip_dax_comments
+from redact import add_raw_arg, redact_value
+
 
 def text(value):
     """Las expresiones en BIM pueden venir como lista de líneas o como cadena."""
@@ -35,7 +38,7 @@ def parse_columns(table):
             "name": c.get("name"),
             "data_type": c.get("dataType"),
             "is_calculated": "expression" in c,
-            "expression": text(c.get("expression")),
+            "expression": strip_dax_comments(text(c.get("expression"))),
             "source_column": c.get("sourceColumn"),
             "description": c.get("description"),
             "format_string": c.get("formatString"),
@@ -52,7 +55,7 @@ def parse_measures(table):
         out.append({
             "table": table.get("name"),
             "name": m.get("name"),
-            "expression": text(m.get("expression")),
+            "expression": strip_dax_comments(text(m.get("expression"))),
             "description": m.get("description"),
             "format_string": m.get("formatString"),
             "display_folder": m.get("displayFolder"),
@@ -61,16 +64,23 @@ def parse_measures(table):
     return out
 
 
-def parse_partitions(table):
+def parse_partitions(table, keep_expression):
     out = []
     for p in table.get("partitions", []):
         src = p.get("source", {})
-        out.append({
+        expression = text(src.get("expression"))
+        origin = parse_m_source(expression) if src.get("type") == "m" else {"kind": None, "objects": []}
+        row = {
             "name": p.get("name"),
             "mode": p.get("mode"),
             "source_type": src.get("type"),
-            "source_expression": text(src.get("expression")),
-        })
+            "source_kind": origin["kind"],
+            "source_objects": origin["objects"],
+        }
+        if keep_expression:
+            # Solo con --raw: el texto M puede traer la consulta completa.
+            row["source_expression"] = expression
+        out.append(row)
     return out
 
 
@@ -100,12 +110,13 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("bim", help="Ruta a Model.bim")
     ap.add_argument("--out", required=True)
+    add_raw_arg(ap)
     args = ap.parse_args()
     model = load_model(args.bim)
     tables, columns, measures = [], [], []
     for t in model.get("tables", []):
         tables.append({"name": t.get("name"), "is_hidden": t.get("isHidden", False),
-                       "description": t.get("description"), "partitions": parse_partitions(t)})
+                       "description": t.get("description"), "partitions": parse_partitions(t, args.raw)})
         columns += [dict(c, table=t.get("name")) for c in parse_columns(t)]
         measures += parse_measures(t)
     out = {
@@ -119,6 +130,8 @@ def main():
                           "credential_type": (d.get("credential") or {}).get("AuthenticationKind")}
                          for d in model.get("dataSources", [])],
     }
+    if not args.raw:
+        out = redact_value(out)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
     print(f"Tablas: {len(tables)}  Columnas: {len(columns)}  Medidas: {len(measures)}  "

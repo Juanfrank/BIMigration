@@ -14,6 +14,8 @@ import os
 import sys
 import zipfile
 
+from redact import add_raw_arg, redact_value
+
 IMAGE_EXT = (".png", ".jpg", ".jpeg", ".svg", ".gif", ".bmp", ".emf", ".wmf", ".webp")
 
 
@@ -236,6 +238,7 @@ def parse_pbip(pbip_path):
 
     pages_meta = load_json(os.path.join(definition, "pages", "pages.json"))
     order = pages_meta.get("pageOrder", [])
+    bookmarks = parse_bookmarks(definition)
     pages = []
     for pid in order:
         pdir = os.path.join(definition, "pages", pid)
@@ -251,6 +254,7 @@ def parse_pbip(pbip_path):
             "id": pid, "name": page.get("displayName"), "width": page.get("width"), "height": page.get("height"),
             "filters": parse_filters(page.get("filterConfig", {}).get("filters")),
             "visuals": visuals,
+            "bookmarks": [b for b in bookmarks if b["page_id"] == pid],
         })
     report_json = load_json(os.path.join(definition, "report.json"))
     ext = []
@@ -272,6 +276,43 @@ def parse_pbip(pbip_path):
             "shared": os.path.join(report_folder, "StaticResources", "SharedResources"),
         },
     }
+
+
+def flatten_group_states(nodes, out):
+    """Aplana el árbol visualContainerGroups de un bookmark a {id: oculto}."""
+    for gid, node in (nodes or {}).items():
+        if "isHidden" in node:
+            out[gid] = node["isHidden"]
+        flatten_group_states(node.get("children"), out)
+    return out
+
+
+def parse_bookmarks(definition):
+    """Bookmarks del informe: por cada página que afectan, qué visuales y grupos fijan ocultos o visibles.
+
+    El estado por defecto de la página no está aquí: es el de visual.json y page.json.
+    """
+    bdir = os.path.join(definition, "bookmarks")
+    index_path = os.path.join(bdir, "bookmarks.json")
+    if not os.path.exists(index_path):
+        return []
+    result = []
+    for item in load_json(index_path).get("items", []):
+        path = os.path.join(bdir, f"{item['name']}.bookmark.json")
+        if not os.path.exists(path):
+            continue
+        bm = load_json(path)
+        opts = bm.get("options", {})
+        targets = opts.get("targetVisualNames") if opts.get("applyOnlyToTargetVisuals") else None
+        for pid, sec in bm.get("explorationState", {}).get("sections", {}).items():
+            overrides = flatten_group_states(sec.get("visualContainerGroups"), {})
+            for vid, vc in sec.get("visualContainers", {}).items():
+                display = vc.get("singleVisual", {}).get("display") or vc.get("display") or {}
+                if display.get("mode") in ("hidden", "visible"):
+                    overrides[vid] = display["mode"] == "hidden"
+            result.append({"name": item["name"], "display_name": bm.get("displayName") or item["name"],
+                           "page_id": pid, "targets": targets, "overrides": overrides})
+    return result
 
 
 def parse_pbip_visual(vj, vid):
@@ -372,6 +413,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("source", help="Archivo .pbip o .pbix")
     ap.add_argument("--out", required=True, help="JSON de salida")
+    add_raw_arg(ap)
     args = ap.parse_args()
     ext = os.path.splitext(args.source)[1].lower()
     if ext == ".pbip":
@@ -380,6 +422,8 @@ def main():
         data = parse_pbix(args.source)
     else:
         sys.exit("Extensión no soportada: use .pbip o .pbix")
+    if not args.raw:
+        data = redact_value(data)
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

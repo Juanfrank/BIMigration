@@ -19,6 +19,9 @@ import sys
 import zipfile
 from datetime import datetime
 
+from bim_core import extract_refs
+from redact import add_raw_arg, redact_text
+
 TOKEN = re.compile(r"\[([^\[\]]+)\]")
 KIND_NAMES = {"measure": "Medida", "column": "Columna", "hierarchy_level": "Nivel de jerarquía",
               "aggregation": "Agregación", "arithmetic": "Aritmética", "unknown": "Desconocido"}
@@ -113,33 +116,100 @@ def build_appendix_a(refs, model, ext_measures, used_by):
     return rows
 
 
-def relationship_activation(rel, model):
-    """Medidas cuyo DAX cita ambas columnas de la relación dentro de USERELATIONSHIP o CROSSFILTER."""
+def page_measure_closure(seed, model):
+    """Medidas de la página y las que citan en su DAX, en cadena. Devuelve {(tabla, nombre)}."""
+    measures = (model or {}).get("measures", [])
+    by_key = {(m["table"], m["name"]): m for m in measures}
+    by_name = {}
+    for m in measures:
+        by_name.setdefault(m["name"], []).append(m)
+    closure = set(seed)
+    todo = list(seed)
+    while todo:
+        m = by_key.get(todo.pop())
+        if not m:
+            continue
+        for table, name in extract_refs({"kind": "measure", "expression": m.get("expression")}):
+            if table:
+                candidates = [by_key[(table, name)]] if (table, name) in by_key else []
+            else:
+                candidates = by_name.get(name, [])
+            for c in candidates:
+                key = (c["table"], c["name"])
+                if key not in closure:
+                    closure.add(key)
+                    todo.append(key)
+    return closure
+
+
+# USERELATIONSHIP(Tabla[Col], OtraTabla[Col]) y CROSSFILTER(Tabla[Col], OtraTabla[Col], dirección).
+ACTIVATION_CALL = re.compile(
+    r"\b(USERELATIONSHIP|CROSSFILTER)\s*\(\s*"
+    r"(?:'((?:[^']|'')+)'|([\w\.]+))\[([^\[\]]+)\]\s*,\s*"
+    r"(?:'((?:[^']|'')+)'|([\w\.]+))\[([^\[\]]+)\]",
+    re.IGNORECASE)
+
+
+def relationship_activation(rel, model, closure):
+    """Medidas de la página (closure) que activan la relación con USERELATIONSHIP o CROSSFILTER.
+
+    Compara tabla y columna de ambos extremos en los argumentos de la llamada, no solo los nombres de columna.
+    """
+    ends = {((rel["from_table"]), rel["from_column"]), (rel["to_table"], rel["to_column"])}
     hits = []
     for m in (model or {}).get("measures", []):
-        expr = m.get("expression") or ""
-        if ("USERELATIONSHIP(" not in expr and "CROSSFILTER(" not in expr):
+        if (m["table"], m["name"]) not in closure:
             continue
-        if f"[{rel['from_column']}]" in expr and f"[{rel['to_column']}]" in expr:
-            hits.append(f"{m['table']}[{m['name']}]")
+        for match in ACTIVATION_CALL.finditer(m.get("expression") or ""):
+            t1 = (match.group(2) or match.group(3)).replace("''", "'")
+            t2 = (match.group(5) or match.group(6)).replace("''", "'")
+            if {(t1, match.group(4)), (t2, match.group(7))} == ends:
+                hits.append(f"{m['table']}[{m['name']}]")
+                break
     return hits
 
 
-def build_appendix_b(refs_tables, model):
+def build_appendix_b(refs_tables, model, page_measures):
+    """Relaciones entre tablas de la página, o activadas por una medida de la página (sus dependencias incluidas)."""
     if not model:
         return None
+    closure = page_measure_closure(page_measures, model)
     rows = []
     for r in model.get("relationships", []):
-        if r["from_table"] not in refs_tables and r["to_table"] not in refs_tables:
+        activated_by = relationship_activation(r, model, closure)
+        both_in_page = r["from_table"] in refs_tables and r["to_table"] in refs_tables
+        if not both_in_page and not activated_by:
             continue
         card = f"{r['from_cardinality']}{' (defecto)' if r['from_cardinality_is_default'] else ''} : " \
                f"{r['to_cardinality']}{' (defecto)' if r['to_cardinality_is_default'] else ''}"
         active = "Sí" if r["is_active"] else "No"
-        activated_by = relationship_activation(r, model)
         rows.append([r["name"], f"{r['from_table']}[{r['from_column']}]", f"{r['to_table']}[{r['to_column']}]",
                      card, r["cross_filtering_behavior"], active,
                      ", ".join(activated_by) if activated_by else ("No se activa por medida" if r["is_active"] else "Ninguna medida citada")])
     return rows
+
+
+ORIGIN_LABELS = {
+    "navigation": "Tabla o vista SQL",
+    "native_query": "Consulta SQL (tablas referenciadas)",
+    "reference": "Otra tabla del modelo",
+    "file": "Archivo (Excel, SharePoint u otro)",
+    "embedded": "Datos embebidos",
+}
+
+
+def origin_rows(table_name, mode, partition):
+    """Filas del Apéndice C para una partición: una por objeto de origen. Nunca incluye el texto M ni SQL."""
+    if partition["source_type"] == "calculated":
+        return [[table_name, mode, "Tabla calculada (DAX)", "—", "—", "—"]]
+    if partition["source_type"] == "calculationGroup":
+        return [[table_name, mode, "Grupo de cálculo", "—", "—", "—"]]
+    label = ORIGIN_LABELS.get(partition.get("source_kind"), "Sin origen reconocible")
+    objects = partition.get("source_objects") or []
+    if not objects:
+        return [[table_name, mode, label, "—", "—", "—"]]
+    return [[table_name, mode, label, obj.get("database") or "—", obj["schema"] or "—", obj["name"]]
+            for obj in objects]
 
 
 def build_appendix_c(refs_tables, model):
@@ -154,7 +224,7 @@ def build_appendix_c(refs_tables, model):
         if t["name"] not in refs_tables:
             continue
         for p in t.get("partitions", []):
-            part_rows.append([t["name"], p["name"], p["mode"], p["source_type"], p["source_expression"]])
+            part_rows.extend(origin_rows(t["name"], p["mode"], p))
     return lines, part_rows
 
 
@@ -197,6 +267,7 @@ def main():
     ap.add_argument("--model", help="model.json de extract_model.py (opcional)")
     ap.add_argument("--out-md", required=True)
     ap.add_argument("--out-dir", required=True, help="Carpeta output/ (recursos externos)")
+    add_raw_arg(ap)
     args = ap.parse_args()
 
     report = json.load(open(args.report, encoding="utf-8"))
@@ -236,7 +307,7 @@ def main():
     lines.append("")
     lines.append(f"- Fuente: `{os.path.basename(report['source']['path'])}` ({report['source']['type']})")
     lines.append(f"- Modelo: {model_status}")
-    lines.append(f"- Capturas: {', '.join(c['file'] for c in numbering['captures'])}")
+    lines.append(f"- Capturas: {', '.join(c['file'] + ' (' + c['scenario'] + ')' for c in numbering['captures'])}")
     lines.append(f"- Generado: {datetime.now():%Y-%m-%d %H:%M}")
     lines.append("")
     lines.append("## 1. Numeración")
@@ -273,6 +344,33 @@ def main():
                            + [["Informe"] + [f["field_label"], f["type"], "; ".join(f["conditions"]) or "—"] for f in report["report_filters"]]))
 
     lines.append("")
+    lines.append("## 4. Escenarios y superposiciones")
+    lines.append("")
+    lines.append("Estado guardado (Default) y cada bookmark que afecta a esta página. Los números son los de la sección 1; "
+                 "«muestra» y «oculta» se comparan contra el estado guardado.")
+    for name, sc in numbering.get("scenarios", {}).items():
+        caps = [c["file"] for c in numbering["captures"] if c["scenario"] == name]
+        title = f"### {name}" + (" (bookmark)" if sc["bookmark"] else " (estado guardado)")
+        lines.append("")
+        lines.append(title)
+        lines.append("")
+        lines.append(f"- Capturas: {', '.join(caps) if caps else 'ninguna'}")
+        lines.append(f"- Visuales visibles (Nº): {', '.join(map(str, sc['visible_numbers'])) or '—'}")
+        if sc["bookmark"]:
+            lines.append(f"- Muestra (Nº): {', '.join(map(str, sc['shows'])) or '—'}")
+            lines.append(f"- Oculta (Nº): {', '.join(map(str, sc['hides'])) or '—'}")
+        if sc["other_changes"]:
+            others = "; ".join(f"{o['visual_type']}" + (f" · {o['title']}" if o["title"] else "") for o in sc["other_changes"])
+            lines.append(f"- Cambios en visuales sin numeración: {others}")
+        if sc["covered"]:
+            lines.append("")
+            lines.append(table(["Nº", "Badge tapado por"],
+                               [[c["number"], "; ".join(f"{b['visual_type']}" + (f" · {b['title']}" if b["title"] else "")
+                                                       for b in c["covered_by"])] for c in sc["covered"]]))
+        else:
+            lines.append("- Superposiciones: ningún badge queda tapado por otro visual.")
+
+    lines.append("")
     lines.append("## Apéndice A. Medidas y columnas calculadas")
     lines.append("")
     if model:
@@ -293,7 +391,8 @@ def main():
     lines.append("")
     lines.append("## Apéndice B. Relaciones")
     lines.append("")
-    rel_rows = build_appendix_b(refs_tables, model)
+    page_measures = {(t, n) for t, n, k in refs if k == 'measure'}
+    rel_rows = build_appendix_b(refs_tables, model, page_measures)
     if rel_rows is None:
         lines.append("Requiere definición del modelo (Model.bim). No se puede completar esta sección.")
     elif rel_rows:
@@ -312,7 +411,7 @@ def main():
         lines.append(table(["Origen", "Tipo", "Detalles de conexión", "Autenticación"], ds_rows) if ds_rows else "El modelo no define orígenes de datos.")
         if part_rows:
             lines.append("")
-            lines.append(table(["Tabla", "Partición", "Modo", "Tipo de origen", "Expresión de origen"], part_rows))
+            lines.append(table(["Tabla", "Modo", "Origen", "Base de datos", "Esquema", "Tabla o vista"], part_rows))
 
     lines.append("")
     lines.append("## Recursos externos")
@@ -326,8 +425,11 @@ def main():
     lines.append("")
 
     os.makedirs(os.path.dirname(os.path.abspath(args.out_md)), exist_ok=True)
+    text = "\n".join(lines)
+    if not args.raw:
+        text = redact_text(text)
     with open(args.out_md, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
+        f.write(text)
     print(f"Markdown: {args.out_md}  ({len(visuals)} visuales)")
 
 

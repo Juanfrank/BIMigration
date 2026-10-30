@@ -6,7 +6,7 @@ Un archivo por página: `output/<Archivo> - <Página>.md`.
 
 - Archivo fuente y tipo (`pbip` o `pbix`).
 - Estado del modelo: incluido (con la ruta del `Model.bim`) o pendiente por modo `byConnection`/`none`.
-- Capturas usadas y fecha de generación.
+- Capturas usadas, con el escenario de cada una, y fecha de generación.
 
 ## 1. Numeración
 
@@ -23,19 +23,45 @@ Un bloque por visual numerado:
 
 Solo si existen. Ámbito, campo, tipo y condición.
 
+## 4. Escenarios y superposiciones
+
+Un bloque por escenario usado por las capturas (Default y cada bookmark usado):
+
+- **Capturas:** las que muestran ese escenario.
+- **Visuales visibles (Nº):** números de la sección 1 visibles en el escenario.
+- **Muestra / Oculta (Nº):** en un bookmark, qué números aparecen y desaparecen respecto al estado guardado.
+- **Cambios en visuales sin numeración:** visuales sin campos (formas, textos) cuya visibilidad cambia.
+- **Badge tapado por:** tabla de números cuyo badge queda cubierto por un visual de mayor z en ese escenario. Si no hay ninguno, lo indica.
+
 ## Apéndice A. Medidas y columnas calculadas
 
-Columnas: tabla, nombre, origen (Medida del modelo, Medida de extensión, Columna calculada), descripción, DAX, formato, carpeta de visualización, oculta, y los números de los visuales que la usan. Si una medida cita otra en su DAX, la segunda aparece con "dependencia" o con los números de visual que la usan.
+Columnas: tabla, nombre, origen (Medida del modelo, Medida de extensión, Columna calculada), descripción, DAX (sin comentarios `//`, `--` ni `/* */`; los que van dentro de cadenas o nombres se conservan), formato, carpeta de visualización, oculta, y los números de los visuales que la usan. Si una medida cita otra en su DAX, la segunda aparece con "dependencia" o con los números de visual que la usan.
 
 Sin `Model.bim`, esta sección dice que requiere el modelo y solo incluye las medidas de extensión que estén en el propio archivo.
 
 ## Apéndice B. Relaciones
 
-Columnas: nombre, lado origen, lado destino, cardinalidad (con `(defecto)` cuando el archivo no la declara), filtro cruzado, si está activa y qué medidas la activan. La activación por medida se detecta cuando el DAX de la medida cita ambas columnas dentro de `USERELATIONSHIP` o `CROSSFILTER`; es una coincidencia textual.
+Incluye una relación si se cumple una de estas condiciones:
+
+- Sus dos extremos son tablas que usan los visuales numerados (campos y filtros).
+- Una medida de la página la activa con `USERELATIONSHIP` o `CROSSFILTER`. Las medidas de la página incluyen las que citan en su DAX (en cadena).
+
+Columnas: nombre, lado origen, lado destino, cardinalidad (con `(defecto)` cuando el archivo no la declara), filtro cruzado, si está activa y qué medidas la activan. La activación compara tabla y columna de ambos extremos en los argumentos de la llamada, no solo el nombre de la columna.
 
 ## Apéndice C. Orígenes de datos
 
-Orígenes del modelo (nombre, tipo, detalles de conexión, autenticación) y particiones de las tablas usadas (modo, tipo y expresión de origen).
+Orígenes del modelo (nombre, tipo, detalles de conexión redactados, autenticación) y, por cada tabla usada, el origen de cada partición.
+
+El origen se muestra solo como **base de datos, esquema y tabla o vista**. No se publica el texto M ni el SQL de las consultas:
+
+- **Tabla o vista SQL:** base, esquema y nombre del origen de navegación.
+- **Consulta SQL:** una fila por tabla o vista de sus FROM y JOIN, con su base (la de la consulta, o la de un nombre de tres partes). Los CTE no cuentan.
+- **Otra tabla del modelo:** la tabla de la que se parte (sin esquema).
+- **Archivo** (Excel, SharePoint u otro): solo el tipo. La ruta o URL no se publica.
+- **Datos embebidos:** datos escritos en la propia expresión.
+- **Tabla calculada (DAX)** y **grupo de cálculo:** sin origen SQL.
+
+Columnas de la tabla de particiones: tabla, modo, origen, base de datos, esquema, tabla o vista.
 
 ## Recursos externos
 
