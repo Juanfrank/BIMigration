@@ -43,6 +43,8 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
+from redact import add_raw_arg, redact_value
+
 BADGE_FONT_PATHS = ["C:/Windows/Fonts/arialbd.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
 GROUP_TYPES = {None, "group", "visualGroup"}
 # Tarjetas con varios campos: cada campo es una tarjeta con su propio número.
@@ -249,6 +251,7 @@ def main():
     ap.add_argument("--anchor", action="append", help="ID_VISUAL=px,py (repetible, mínimo 2 para calibrar)")
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--numbering-out", required=True, help="JSON con la numeración de la página")
+    add_raw_arg(ap)
     args = ap.parse_args()
 
     with open(args.report, encoding="utf-8") as f:
@@ -337,6 +340,8 @@ def main():
         print(f"{os.path.basename(cap)} [{name}]: {len(drawn)} visuales numerados ({t['mode']}) -> {out_img}")
         print(f"  contornos: {out_outline}")
 
+    if not args.raw:
+        numbering = redact_value(numbering)
     with open(args.numbering_out, "w", encoding="utf-8") as f:
         json.dump(numbering, f, ensure_ascii=False, indent=2)
     print(f"Escenarios: {', '.join(shown)}  ·  visuales numerados en la página: {len(numbered)}")

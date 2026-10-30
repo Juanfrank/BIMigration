@@ -53,3 +53,5 @@ processed/<Archivo>/
 - No inventes DAX, descripciones ni relaciones. Si un dato no está en el archivo o en el `Model.bim`, el .md lo dice.
 - Los recursos externos (imágenes, SVG, shapes) se copian a `output/resources/` solo si están en una captura.
 - No subas al repo ni hagas commit sin que el usuario lo pida.
+- La redacción (`scripts/redact.py`) está activa por defecto en todas las salidas y en la copia de fuentes. No uses `--raw` para algo que vaya a versionarse. El `Model.bim` no se copia al repo.
+- Las capturas no se redactan: revise que no muestren servidores o credenciales.

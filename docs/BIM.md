@@ -56,6 +56,18 @@ Cada objeto es un diccionario con `kind`, `table`, `name`, `expression`, `data_t
 
 `extract_refs` devuelve `[(tabla o None, nombre)]`. Una referencia sin tabla (`[Medida]`) aparece con `None`.
 
+## Redacción
+
+Por defecto, `bim_search.py` redacta su salida (texto y JSON): hosts en orígenes M (`Sql.Databases("...")`), IPs, cadenas de conexión, credenciales y URLs `powerbi://`. `--raw` desactiva la redacción para uso local.
+
+El índice de la caché **no** se redacta, porque la búsqueda necesita el texto real. No lo copie fuera de su equipo. Vive en `~/.cache/bim-search`, fuera del repo.
+
+La redacción se define en `scripts/redact.py`; sus pruebas están en `scripts/test_redact.py`:
+
+```bash
+python -m unittest scripts/test_redact.py
+```
+
 ## Decisiones
 
 - **Índice en SQLite y no solo lectura del JSON.** Cada consulta de Python ya cuesta parsear el archivo (≈0.1 s con un modelo de 5 MB). El índice permite búsquedas por texto, dependencias en ambas direcciones y varias consultas sin volver a leer el archivo.
@@ -69,4 +81,4 @@ Cada objeto es un diccionario con `kind`, `table`, `name`, `expression`, `data_t
 - **Nombres de columnas idénticos en varias tablas.** `refs` con `--table` intenta resolverlo, pero las referencias sin tabla pueden aparecer de más.
 - **Expresiones M.** Se indexan como texto. Las dependencias entre consultas M (por ejemplo, un paso que usa otra tabla) no se extraen.
 - **Solo `Model.bim`.** Los modelos en TMDL no se leen; conviértalos antes (Tabular Editor o pbi-tools).
-- **Datos sensibles.** Las expresiones M de las particiones pueden contener direcciones de servidor. Antes de copiar una salida al repo, revísela.
+- **Redacción por patrón.** Un nombre de servidor escrito sin patrón de origen ni de clave de conexión (por ejemplo, en una descripción) no se detecta. Revise la salida antes de versionarla.

@@ -30,7 +30,9 @@ Lee un `.pbip` (formato PBIR) o un `.pbix` (`Report/Layout`).
 - **Pozos:** los nombres de pozo son los de Power BI tal como aparecen en `query.queryState` (PBIR) o `projections` (pbix): por ejemplo `Data`, `Values`, `Rows`, `Columns`, `Category`, `Y`, `Y2`.
 - **Campo:** `column`, `measure`, `hierarchy_level`, `aggregation` (con su función) o `arithmetic` (con sus dos lados y el operador). Cada campo lleva su nombre visible (`displayName`).
 - **Filtros:** de visual, de página y de informe. Cada filtro conserva tipo, origen (`howCreated`) y condición en texto. Las expresiones de fecha se conservan con su unidad numérica (ver limitaciones).
-- **Redacción (`--redact`):** quita la cadena de conexión del modelo remoto de `definition.pbir` y de `report.json` en la copia del repo.
+- **Redacción (por defecto):** `scripts/redact.py` quita hosts, IPs, credenciales y cadenas de conexión de todas las salidas (`report.json`, `model.json`, `numbering.json`, el `.md`) y de los archivos de texto copiados al repo (`definition.pbir`, `.dax`, `.pbip`). Los visuales de terceros (`CustomVisuals/`, `StaticResources/`) no se tocan. `--raw` desactiva la redacción; úselo solo en local.
+- **Model.bim:** no se copia al repo (contiene expresiones M con servidores). Se lee desde su ubicación original. Con `--raw` sí se copia.
+- **Capturas:** no se redactan. Revise que no muestren servidores o credenciales antes de versionarlas.
 - **Modelo:** en PBIP, `definition.pbir` indica si el modelo es `byConnection`, `byPath` o ninguno. En PBIX, indica si `DataModel` está embebido.
 - **Medidas de extensión:** `definition/reportExtensions.json`, con su DAX.
 

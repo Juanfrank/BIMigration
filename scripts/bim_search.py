@@ -11,6 +11,8 @@ Uso:
 Opciones comunes:
     --bim RUTA   archivo .bim. Si se omite, se usa el último que se consultó.
     --rebuild    reconstruye el índice aunque el archivo no haya cambiado.
+    --raw        sin redacción en la salida (uso local). Por defecto se redactan hosts, IPs y credenciales
+                 que aparezcan en expresiones M o en cadenas de conexión.
 
 El índice se crea la primera vez que se consulta un .bim y se guarda en la caché del usuario
 (~/.cache/bim-search, o $XDG_CACHE_HOME). Se identifica por el hash del archivo: si el .bim cambia,
@@ -31,6 +33,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from bim_core import extract_refs, iter_objects, load_bim, sha256_file  # noqa: E402
+from redact import RedactingStream, add_raw_arg  # noqa: E402
 
 SCHEMA_VERSION = "1"
 CACHE_DIR = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "bim-search"
@@ -330,6 +333,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--bim", help="archivo .bim (por defecto, el último consultado)")
     ap.add_argument("--rebuild", action="store_true")
+    add_raw_arg(ap)
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("search", help="buscar por texto o regex")
@@ -359,9 +363,16 @@ def main():
     args = ap.parse_args()
     if args.cmd == "search" and not args.text and not args.kind and not args.table and not args.regex:
         ap.error("search necesita texto, --kind, --table o --regex")
+    if not args.raw:
+        sys.stdout = RedactingStream(sys.stdout)
+        sys.stderr = RedactingStream(sys.stderr)
     bim = resolve_bim(args.bim)
     con = ensure_index(bim, args.rebuild)
-    {"search": cmd_search, "show": cmd_show, "refs": cmd_refs, "stats": cmd_stats}[args.cmd](con, args)
+    try:
+        {"search": cmd_search, "show": cmd_show, "refs": cmd_refs, "stats": cmd_stats}[args.cmd](con, args)
+    finally:
+        sys.stdout.flush()
+        sys.stderr.flush()
 
 
 if __name__ == "__main__":

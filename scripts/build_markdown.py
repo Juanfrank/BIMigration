@@ -19,6 +19,8 @@ import sys
 import zipfile
 from datetime import datetime
 
+from redact import add_raw_arg, redact_text
+
 TOKEN = re.compile(r"\[([^\[\]]+)\]")
 KIND_NAMES = {"measure": "Medida", "column": "Columna", "hierarchy_level": "Nivel de jerarquía",
               "aggregation": "Agregación", "arithmetic": "Aritmética", "unknown": "Desconocido"}
@@ -197,6 +199,7 @@ def main():
     ap.add_argument("--model", help="model.json de extract_model.py (opcional)")
     ap.add_argument("--out-md", required=True)
     ap.add_argument("--out-dir", required=True, help="Carpeta output/ (recursos externos)")
+    add_raw_arg(ap)
     args = ap.parse_args()
 
     report = json.load(open(args.report, encoding="utf-8"))
@@ -353,8 +356,11 @@ def main():
     lines.append("")
 
     os.makedirs(os.path.dirname(os.path.abspath(args.out_md)), exist_ok=True)
+    text = "\n".join(lines)
+    if not args.raw:
+        text = redact_text(text)
     with open(args.out_md, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
+        f.write(text)
     print(f"Markdown: {args.out_md}  ({len(visuals)} visuales)")
 
 

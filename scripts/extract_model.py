@@ -12,6 +12,8 @@ import argparse
 import json
 import sys
 
+from redact import add_raw_arg, redact_value
+
 
 def text(value):
     """Las expresiones en BIM pueden venir como lista de líneas o como cadena."""
@@ -100,6 +102,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("bim", help="Ruta a Model.bim")
     ap.add_argument("--out", required=True)
+    add_raw_arg(ap)
     args = ap.parse_args()
     model = load_model(args.bim)
     tables, columns, measures = [], [], []
@@ -119,6 +122,8 @@ def main():
                           "credential_type": (d.get("credential") or {}).get("AuthenticationKind")}
                          for d in model.get("dataSources", [])],
     }
+    if not args.raw:
+        out = redact_value(out)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
     print(f"Tablas: {len(tables)}  Columnas: {len(columns)}  Medidas: {len(measures)}  "

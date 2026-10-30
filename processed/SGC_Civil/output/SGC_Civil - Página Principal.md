@@ -3,7 +3,7 @@
 - Fuente: `SGC_Civil.pbip` (pbip)
 - Modelo: Modo 'byConnection': no hay Model.bim local. Las secciones de modelo están pendientes.
 - Capturas: 1.png (Default), 2.png (MenuA)
-- Generado: 2026-10-30 01:24
+- Generado: 2026-10-30 01:36
 
 ## 1. Numeración
 

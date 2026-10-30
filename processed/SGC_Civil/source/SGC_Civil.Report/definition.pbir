@@ -3,7 +3,7 @@
   "version": "4.0",
   "datasetReference": {
     "byConnection": {
-      "connectionString": "<REDACTED: connection string removed before publishing>"
+      "connectionString": "<REDACTED>"
     }
   }
 }

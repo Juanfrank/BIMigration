@@ -6,7 +6,7 @@
   },
   "model": {
     "mode": "byConnection",
-    "connection": "<REDACTED: connection string removed before publishing>"
+    "connection": "<REDACTED>"
   },
   "report_filters": [
     {

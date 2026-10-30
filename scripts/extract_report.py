@@ -14,6 +14,8 @@ import os
 import sys
 import zipfile
 
+from redact import add_raw_arg, redact_value
+
 IMAGE_EXT = (".png", ".jpg", ".jpeg", ".svg", ".gif", ".bmp", ".emf", ".wmf", ".webp")
 
 
@@ -411,6 +413,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("source", help="Archivo .pbip o .pbix")
     ap.add_argument("--out", required=True, help="JSON de salida")
+    add_raw_arg(ap)
     args = ap.parse_args()
     ext = os.path.splitext(args.source)[1].lower()
     if ext == ".pbip":
@@ -419,6 +422,8 @@ def main():
         data = parse_pbix(args.source)
     else:
         sys.exit("Extensión no soportada: use .pbip o .pbix")
+    if not args.raw:
+        data = redact_value(data)
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
